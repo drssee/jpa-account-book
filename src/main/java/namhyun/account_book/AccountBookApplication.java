@@ -1,13 +1,13 @@
-package namhyun.account_shop;
+package namhyun.account_book;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AccountShopApplication {
+public class AccountBookApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AccountShopApplication.class, args);
+		SpringApplication.run(AccountBookApplication.class, args);
 	}
 
 }

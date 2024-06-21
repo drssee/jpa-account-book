@@ -1,9 +1,9 @@
-package namhyun.account_shop.domain;
+package namhyun.account_book.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import namhyun.account_shop.enums.SendType;
+import namhyun.account_book.enums.SendType;
 
 import java.time.LocalDateTime;
 

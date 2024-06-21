@@ -1,4 +1,4 @@
-package namhyun.account_shop.domain;
+package namhyun.account_book.domain;
 
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;

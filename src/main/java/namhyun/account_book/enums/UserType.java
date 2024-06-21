@@ -1,4 +1,4 @@
-package namhyun.account_shop.enums;
+package namhyun.account_book.enums;
 
 public enum UserType {
     USER, ADMIN
