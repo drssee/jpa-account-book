@@ -4,8 +4,6 @@ import namhyun.account_book.dao.ConfigDao;
 import namhyun.account_book.dto.ConfigDto;
 import namhyun.account_book.dto.SearchCondition;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

@@ -16,6 +16,12 @@ public class StatisticsServiceImpl implements StatisticsService {
 
     @Override
     public StatisticsDto saveStatistics(StatisticsDto statisticsDto) {
-        return null;
+        // 존재하면 통계 최신화 update 없으면 insert
+        StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(statisticsDto);
+        if (findStatisticsDto == null) {
+            return statisticsDao.saveStatistics(statisticsDto);
+        }
+
+        return statisticsDao.updateStatistics(statisticsDto);
     }
 }

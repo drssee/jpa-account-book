@@ -10,4 +10,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ConfigDto extends BaseDto {
+
+    private Long id;
+    private int payLimit;
+    private boolean canSendMessage;
+    private MemberDto memberDto;
 }

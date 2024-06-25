@@ -1,6 +1,5 @@
 package namhyun.account_book.dto;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,5 +17,5 @@ public class PayPurposeDto extends BaseDto {
     private Long id;
     private String name;
     private PayPurpose parent;
-    private List<PayPurpose> children;
+    private List<PayPurposeDto> children;
 }

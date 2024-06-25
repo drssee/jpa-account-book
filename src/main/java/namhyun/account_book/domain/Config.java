@@ -16,7 +16,6 @@ public class Config extends BaseEntity {
     private Long id;
 
     private int payLimit = DEFAULT_LIMIT;
-    private boolean canAlertPayLimit;
     private boolean canSendMessage;
 
     @OneToOne(fetch = FetchType.LAZY)
