@@ -7,8 +7,9 @@ import java.util.List;
 
 public interface ConfigDao {
 
-    ConfigDao saveConfig(ConfigDto configDto);
-    ConfigDao updateConfig(ConfigDto configDto);
-    ConfigDao getConfigById(Long id);
+    ConfigDto saveConfig(ConfigDto configDto);
+    ConfigDto updateConfig(ConfigDto configDto);
+    ConfigDto getConfigById(Long id);
+    ConfigDto getConfigByMemberId(String memberId);
     List<ConfigDto> getConfigs(SearchCondition searchCondition);
 }

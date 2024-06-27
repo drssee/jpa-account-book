@@ -13,3 +13,20 @@ EntityManager em;를 통해 주입 받은 엔티티매니저는 가짜 프록시
 트랜잭션이 걸리지 않은 메서드에서 내부 호출로 트랜잭션 적용 메서드를 호출 할 경우 트랜잭션이 걸리지 않음
 
 클래스 레벨에 트랜잭션을 적용할 경우 동일한 상황에서 내부 호출 메서드가 트랜잭션에 참여함
+
+*엔티티 저장시 주의점
+@Override
+    public ConfigDto saveConfig(ConfigDto configDto) {
+        configDto.setCreatedAt(LocalDateTime.now());
+        configDto.setCreatedBy(configDto.getMemberDto().getId());
+        MemberDto memberDto = configDto.getMemberDto();
+        Member member = em.find(Member.class, memberDto.getId());
+        if (member == null) {
+            throw new RuntimeException("saveConfig - Member not found");
+        }
+        Config config = modelMapper.map(configDto, Config.class);
+        config.setMember(member);
+        em.persist(config);
+        return modelMapper.map(config, ConfigDto.class);
+    }
+Config 내부 Member 도 영속화가 되어 있어야 조회시 '영속화 되어있지 않음' 예외가 터지지 않는다
