@@ -44,7 +44,12 @@ public class StatisticsDaoImpl implements StatisticsDao {
         Statistics statistics = em.find(Statistics.class, modelMapper.map(findStatisticsDto, Statistics.class).getId());
         statistics.setUpdatedAt(LocalDateTime.now());
         statistics.setUpdatedBy(statisticsDto.getMemberDto().getId());
-        statistics.setPayments(statisticsDto.getPayments());
+        // 부분합 or 전체업데이트 적용
+        if (statisticsDto.isNeedSum())  {
+            statistics.setPayments(statistics.getPayments() + statisticsDto.getPayments());
+        } else {
+            statistics.setPayments(statisticsDto.getPayments());
+        }
         return modelMapper.map(statistics, StatisticsDto.class);
     }
 

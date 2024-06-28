@@ -21,7 +21,11 @@ public class StatisticsServiceImpl implements StatisticsService {
         if (findStatisticsDto == null) {
             return statisticsDao.saveStatistics(statisticsDto);
         }
-
         return statisticsDao.updateStatistics(statisticsDto);
+    }
+
+    @Override
+    public StatisticsDto getStatisticsByDateAndMember(StatisticsDto statisticsDto) {
+        return statisticsDao.getStatisticsByDateAndMember(statisticsDto);
     }
 }

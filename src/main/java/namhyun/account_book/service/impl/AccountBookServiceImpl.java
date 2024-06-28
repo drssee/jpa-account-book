@@ -42,12 +42,19 @@ public class AccountBookServiceImpl implements AccountBookService {
         ConfigDto findConfig = configService.getConfigByMemberId(savedAccountBook.getMemberDto().getId());
         // 4. 메시지 발송여부 true 일 경우 send 저장
         if (findConfig.isCanSendMessage()) {
-            SendDto sendDto = new SendDto();
-            sendDto.setMemberDto(savedAccountBook.getMemberDto());
-            SendDto savedSend = sendService.saveSend(sendDto);
-            log.debug("savedSend: {}", savedSend.getId());
+            // 별도의 메서드로 분리하고 유저 설정값에 따라 처리되도록 수정
+//            SendDto sendDto = new SendDto();
+//            sendDto.setMemberDto(savedAccountBook.getMemberDto());
+//            SendDto savedSend = sendService.saveSend(sendDto);
+//            log.debug("savedSend: {}", savedSend.getId());
 
             // 5. 한도를 초과했을 경우 추과 메시지 send
+            // 5-1. 통계에서 현재 연월의 결제액을 가져온다
+            int userPayments = statisticsService.getStatisticsByDateAndMember(savedStatistics).getPayments();
+            // 5-2. 결제액과 한도를 비교하여 추가 메시지 작성
+            if (userPayments >= findConfig.getPayLimit()) {
+//                sendService.saveSend()
+            }
         }
     }
 }

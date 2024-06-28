@@ -16,4 +16,5 @@ public class StatisticsDto extends BaseDto {
     private String month;
     private int payments;
     private MemberDto memberDto;
+    private boolean needSum;
 }

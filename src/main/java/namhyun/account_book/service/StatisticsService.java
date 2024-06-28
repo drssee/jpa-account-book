@@ -5,4 +5,5 @@ import namhyun.account_book.dto.StatisticsDto;
 public interface StatisticsService {
 
     StatisticsDto saveStatistics(StatisticsDto statisticsDto);
+    StatisticsDto getStatisticsByDateAndMember(StatisticsDto statisticsDto);
 }

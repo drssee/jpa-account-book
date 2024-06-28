@@ -44,7 +44,8 @@ public class StatisticsDaoTest {
     void updateStatistics() {
         saveStatistics();
         StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(statisticsDto);
-        findStatisticsDto.setPayments(findStatisticsDto.getPayments() + 10000);
+        int res = findStatisticsDto.getPayments() + 10000;
+        findStatisticsDto.setPayments(res);
 
         Assertions.assertThat(findStatisticsDto.getId()).isNotNull();
 
@@ -54,6 +55,28 @@ public class StatisticsDaoTest {
         Assertions.assertThat(updatedStatistics.getUpdatedAt()).isNotNull();
         Assertions.assertThat(updatedStatistics.getUpdatedBy()).isNotNull();
         Assertions.assertThat(updatedStatistics.getUpdatedBy()).isEqualTo(findStatisticsDto.getMemberDto().getId());
+        Assertions.assertThat(updatedStatistics.getPayments()).isEqualTo(res);
+    }
+
+    @Test
+    @DisplayName("StatisticsDao.updateStatistics(needSome)")
+    void updateStatisticsWithNeedSum() {
+        saveStatistics();
+        StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(statisticsDto);
+        findStatisticsDto.setNeedSum(true);
+        int res = findStatisticsDto.getPayments() + 10000;
+        findStatisticsDto.setPayments(10000);
+
+        Assertions.assertThat(findStatisticsDto.getId()).isNotNull();
+
+
+        StatisticsDto updatedStatistics = statisticsDao.updateStatistics(findStatisticsDto);
+        Assertions.assertThat(updatedStatistics).isNotNull();
+        Assertions.assertThat(updatedStatistics.getId()).isNotNull();
+        Assertions.assertThat(updatedStatistics.getUpdatedAt()).isNotNull();
+        Assertions.assertThat(updatedStatistics.getUpdatedBy()).isNotNull();
+        Assertions.assertThat(updatedStatistics.getUpdatedBy()).isEqualTo(findStatisticsDto.getMemberDto().getId());
+        Assertions.assertThat(updatedStatistics.getPayments()).isEqualTo(res);
     }
 
     @Test

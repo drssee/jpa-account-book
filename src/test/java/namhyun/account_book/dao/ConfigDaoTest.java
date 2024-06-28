@@ -33,6 +33,9 @@ public class ConfigDaoTest {
     @Test
     @DisplayName("ConfigDao.saveConfig()")
     void saveConfig() {
+        // 멤버저장
+        memberDao.saveMember(memberDto);
+        // 설정저장
         ConfigDto savedConfig = configDao.saveConfig(configDto);
 
         Assertions.assertThat(savedConfig).isNotNull();
@@ -48,7 +51,7 @@ public class ConfigDaoTest {
         // 멤버저장
         MemberDto savedMember = memberDao.saveMember(memberDto);
         // 설정저장
-        saveConfig();
+        ConfigDto savedConfig = configDao.saveConfig(configDto);
         // 조회테스트
         ConfigDto findConfig = configDao.getConfigByMemberId(savedMember.getId());
 

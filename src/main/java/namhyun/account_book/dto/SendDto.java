@@ -18,5 +18,6 @@ public class SendDto extends BaseDto {
     private LocalDateTime estimatedSendTime;
     private SendType sendType;
     private boolean isSend;
+    private String msg;
     private MemberDto memberDto;
 }
