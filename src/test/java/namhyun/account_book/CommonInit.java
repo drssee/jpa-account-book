@@ -1,4 +1,4 @@
-package namhyun.account_book.dao;
+package namhyun.account_book;
 
 import namhyun.account_book.dto.*;
 import namhyun.account_book.enums.SendType;
@@ -14,7 +14,7 @@ public class CommonInit {
     private final int DEFAULT_SEND_MINUTES = 60;
     private final String DEFAULT_SEND_MSG = "`s Send Msg";
 
-    MemberDto initMemberDto() {
+    public MemberDto initMemberDto() {
         MemberDto memberDto = new MemberDto();
         memberDto.setId(DEFAULT_ID);
         memberDto.setName(DEFAULT_NAME);
@@ -24,13 +24,13 @@ public class CommonInit {
         return memberDto;
     }
 
-    PayPurposeDto initPayPurposeDto() {
+    public PayPurposeDto initPayPurposeDto() {
         PayPurposeDto payPurposeDto = new PayPurposeDto();
         payPurposeDto.setName(DEFAULT_NAME);
         return payPurposeDto;
     }
 
-    StatisticsDto initStatisticsDto() {
+    public StatisticsDto initStatisticsDto() {
         StatisticsDto statisticsDto = new StatisticsDto();
         statisticsDto.setMemberDto(initMemberDto());
         statisticsDto.setPayments(10000);
@@ -39,7 +39,7 @@ public class CommonInit {
         return statisticsDto;
     }
 
-    ConfigDto initConfigDto() {
+    public ConfigDto initConfigDto() {
         ConfigDto configDto = new ConfigDto();
         configDto.setMemberDto(initMemberDto());
         configDto.setPayLimit(DEFAULT_PAY_LIMIT);
@@ -47,12 +47,21 @@ public class CommonInit {
         return configDto;
     }
 
-    SendDto initSendDto() {
+    public SendDto initSendDto() {
         SendDto sendDto = new SendDto();
         sendDto.setMemberDto(initMemberDto());
-        sendDto.setEstimatedSendTime(LocalDateTime.now().plusMinutes(DEFAULT_SEND_MINUTES));
-        sendDto.setSendType(SendType.MAIL);
+        sendDto.setSendTime(LocalDateTime.now().plusMinutes(DEFAULT_SEND_MINUTES));
+        sendDto.setSendType(SendType.KAKAO);
         sendDto.setMsg(sendDto.getMemberDto().getId() + DEFAULT_SEND_MSG);
         return sendDto;
+    }
+
+    public AccountBookDto initAccountBookDto() {
+        AccountBookDto accountBookDto = new AccountBookDto();
+        accountBookDto.setPrice(10000);
+        accountBookDto.setMemberDto(initMemberDto());
+        accountBookDto.setTitle("AccountBookDaoTest");
+        accountBookDto.setPayPurpose(initPayPurposeDto());
+        return accountBookDto;
     }
 }

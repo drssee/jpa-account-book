@@ -7,10 +7,7 @@ import namhyun.account_book.dto.AccountBookDto;
 import namhyun.account_book.dto.ConfigDto;
 import namhyun.account_book.dto.SendDto;
 import namhyun.account_book.dto.StatisticsDto;
-import namhyun.account_book.service.AccountBookService;
-import namhyun.account_book.service.ConfigService;
-import namhyun.account_book.service.SendService;
-import namhyun.account_book.service.StatisticsService;
+import namhyun.account_book.service.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,19 +39,14 @@ public class AccountBookServiceImpl implements AccountBookService {
         ConfigDto findConfig = configService.getConfigByMemberId(savedAccountBook.getMemberDto().getId());
         // 4. 메시지 발송여부 true 일 경우 send 저장
         if (findConfig.isCanSendMessage()) {
-            // 별도의 메서드로 분리하고 유저 설정값에 따라 처리되도록 수정
-//            SendDto sendDto = new SendDto();
-//            sendDto.setMemberDto(savedAccountBook.getMemberDto());
-//            SendDto savedSend = sendService.saveSend(sendDto);
-//            log.debug("savedSend: {}", savedSend.getId());
-
-            // 5. 한도를 초과했을 경우 추과 메시지 send
-            // 5-1. 통계에서 현재 연월의 결제액을 가져온다
-            int userPayments = statisticsService.getStatisticsByDateAndMember(savedStatistics).getPayments();
-            // 5-2. 결제액과 한도를 비교하여 추가 메시지 작성
-            if (userPayments >= findConfig.getPayLimit()) {
-//                sendService.saveSend()
-            }
+            SendDto createdSend = sendService.createSend(
+                    findConfig.getCustomSendType(),
+                    findConfig.getCustomMsg(),
+                    findConfig.getCustomSendTime(),
+                    findConfig.getMemberDto().getId()
+            );
+            SendDto savedSend = sendService.saveSend(createdSend);
+            log.debug("savedSend: {}", savedSend.getId());
         }
     }
 }

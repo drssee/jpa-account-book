@@ -5,4 +5,5 @@ import namhyun.account_book.dto.ConfigDto;
 public interface ConfigService {
 
     ConfigDto getConfigByMemberId(String memberId);
+    ConfigDto saveConfig(ConfigDto configDto);
 }

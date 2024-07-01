@@ -1,5 +1,7 @@
 package namhyun.account_book.dao;
 
+import namhyun.account_book.CommonInit;
+import namhyun.account_book.Utils;
 import namhyun.account_book.dto.MemberDto;
 import namhyun.account_book.dto.StatisticsDto;
 import org.assertj.core.api.Assertions;
@@ -43,7 +45,9 @@ public class StatisticsDaoTest {
     @DisplayName("StatisticsDao.updateStatistics")
     void updateStatistics() {
         saveStatistics();
-        StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(statisticsDto);
+        StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(statisticsDto.getYear(), statisticsDto.getMonth(), statisticsDto.getMemberDto())
+        );
         int res = findStatisticsDto.getPayments() + 10000;
         findStatisticsDto.setPayments(res);
 
@@ -62,7 +66,9 @@ public class StatisticsDaoTest {
     @DisplayName("StatisticsDao.updateStatistics(needSome)")
     void updateStatisticsWithNeedSum() {
         saveStatistics();
-        StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(statisticsDto);
+        StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(statisticsDto.getYear(), statisticsDto.getMonth(), statisticsDto.getMemberDto())
+        );
         findStatisticsDto.setNeedSum(true);
         int res = findStatisticsDto.getPayments() + 10000;
         findStatisticsDto.setPayments(10000);
@@ -83,7 +89,9 @@ public class StatisticsDaoTest {
     @DisplayName("StatisticsDao.getStatisticsByDateAndMember")
     void getStatisticsByDateAndMember() {
         saveStatistics();
-        StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(statisticsDto);
+        StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(statisticsDto.getYear(), statisticsDto.getMonth(), statisticsDto.getMemberDto())
+        );
 
         Assertions.assertThat(findStatisticsDto).isNotNull();
         Assertions.assertThat(findStatisticsDto.getYear()).isEqualTo(statisticsDto.getYear());

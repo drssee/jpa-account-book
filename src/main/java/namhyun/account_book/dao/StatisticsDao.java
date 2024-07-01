@@ -10,6 +10,6 @@ public interface StatisticsDao {
     StatisticsDto saveStatistics(StatisticsDto statisticsDto);
     StatisticsDto updateStatistics(StatisticsDto statisticsDto);
     StatisticsDto getStatisticsById(Long id);
-    StatisticsDto getStatisticsByDateAndMember(StatisticsDto statisticsDto);
+    StatisticsDto getStatisticsByDateAndMember(SearchCondition searchCondition);
     List<StatisticsDto> getStatistics(SearchCondition searchCondition);
 }

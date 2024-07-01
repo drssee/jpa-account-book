@@ -1,5 +1,5 @@
 package namhyun.account_book.enums;
 
 public enum SendType {
-    MAIL
+    MAIL, KAKAO
 }

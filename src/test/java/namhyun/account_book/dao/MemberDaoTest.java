@@ -1,5 +1,6 @@
 package namhyun.account_book.dao;
 
+import namhyun.account_book.CommonInit;
 import namhyun.account_book.dto.MemberDto;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

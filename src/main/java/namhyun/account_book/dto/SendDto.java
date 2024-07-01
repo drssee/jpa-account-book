@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class SendDto extends BaseDto {
 
     private Long id;
-    private LocalDateTime estimatedSendTime;
+    private LocalDateTime sendTime;
     private SendType sendType;
     private boolean isSend;
     private String msg;

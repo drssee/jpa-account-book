@@ -3,6 +3,7 @@ package namhyun.account_book.dao.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import namhyun.account_book.Utils;
 import namhyun.account_book.dao.StatisticsDao;
 import namhyun.account_book.domain.Member;
 import namhyun.account_book.domain.Statistics;
@@ -40,7 +41,9 @@ public class StatisticsDaoImpl implements StatisticsDao {
 
     @Override
     public StatisticsDto updateStatistics(StatisticsDto statisticsDto) {
-        StatisticsDto findStatisticsDto = this.getStatisticsByDateAndMember(statisticsDto);
+        StatisticsDto findStatisticsDto = this.getStatisticsByDateAndMember(
+                        Utils.getSearchCondition(statisticsDto.getYear(), statisticsDto.getMonth(), statisticsDto.getMemberDto())
+                );
         Statistics statistics = em.find(Statistics.class, modelMapper.map(findStatisticsDto, Statistics.class).getId());
         statistics.setUpdatedAt(LocalDateTime.now());
         statistics.setUpdatedBy(statisticsDto.getMemberDto().getId());
@@ -59,12 +62,12 @@ public class StatisticsDaoImpl implements StatisticsDao {
     }
 
     @Override
-    public StatisticsDto getStatisticsByDateAndMember(StatisticsDto statisticsDto) {
+    public StatisticsDto getStatisticsByDateAndMember(SearchCondition searchCondition) {
         String query = "select s from Statistics s where s.year = :year and s.month = :month and s.member = :member";
         Statistics result = em.createQuery(query, Statistics.class)
-                .setParameter("year", statisticsDto.getYear())
-                .setParameter("month", statisticsDto.getMonth())
-                .setParameter("member", modelMapper.map(statisticsDto.getMemberDto(), Member.class))
+                .setParameter("year", searchCondition.getYear())
+                .setParameter("month", searchCondition.getMonth())
+                .setParameter("member", modelMapper.map(searchCondition.getMemberDto(), Member.class))
                 .getSingleResult();
         em.persist(result);
         return modelMapper.map(result, StatisticsDto.class);

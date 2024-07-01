@@ -11,14 +11,13 @@ import namhyun.account_book.dto.MemberDto;
 import namhyun.account_book.dto.SearchCondition;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.ui.ModelMap;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class ConfigBookDaoImpl implements ConfigDao {
+public class ConfigDaoImpl implements ConfigDao {
 
     @PersistenceContext
     private EntityManager em;

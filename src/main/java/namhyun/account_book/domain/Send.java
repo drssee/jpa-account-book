@@ -16,7 +16,7 @@ public class Send extends BaseEntity {
     @Id @GeneratedValue @Column(name = "SEND_ID")
     private Long id;
 
-    private LocalDateTime estimatedSendTime;
+    private LocalDateTime sendTime;
 
     @Enumerated(EnumType.STRING)
     private SendType sendType;
@@ -26,4 +26,6 @@ public class Send extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member;
+
+    private String msg;
 }
