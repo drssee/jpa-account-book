@@ -19,6 +19,7 @@ public class AccountBookServiceImpl implements AccountBookService {
 
     private final AccountBookDao accountBookDao;
     private final StatisticsService statisticsService;
+    private final MemberService memberService;
     private final ConfigService configService;
     private final SendService sendService;
 
@@ -31,7 +32,9 @@ public class AccountBookServiceImpl implements AccountBookService {
         // 2. statistics 업데이트
         StatisticsDto statisTicsDto = new StatisticsDto();
         statisTicsDto.setPayments(savedAccountBook.getPrice());
+
         statisTicsDto.setMemberDto(savedAccountBook.getMemberDto());
+        statisTicsDto.setNeedSum(accountBookDto.isNeedSum());
         StatisticsDto savedStatistics = statisticsService.saveStatistics(statisTicsDto);
         log.debug("savedStatistics: {}", savedStatistics.getId());
 

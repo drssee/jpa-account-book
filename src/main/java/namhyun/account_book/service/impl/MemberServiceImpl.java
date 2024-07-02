@@ -18,4 +18,9 @@ public class MemberServiceImpl implements MemberService {
     public MemberDto saveMember(MemberDto memberDto) {
         return memberDao.saveMember(memberDto);
     }
+
+    @Override
+    public MemberDto getMemberById(String memberId) {
+        return null;
+    }
 }

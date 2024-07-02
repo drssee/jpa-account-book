@@ -1,7 +1,7 @@
 package namhyun.account_book.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import namhyun.account_book.Utils;
+import namhyun.account_book.common.Utils;
 import namhyun.account_book.dao.StatisticsDao;
 import namhyun.account_book.dto.SearchCondition;
 import namhyun.account_book.dto.StatisticsDto;
@@ -24,7 +24,6 @@ public class StatisticsServiceImpl implements StatisticsService {
             statisticsDao.getStatisticsByDateAndMember(
                     Utils.getSearchCondition(statisticsDto.getYear(), statisticsDto.getMonth(), statisticsDto.getMemberDto())
             );
-            statisticsDto.setNeedSum(true);
             return statisticsDao.updateStatistics(statisticsDto);
         } catch (EmptyResultDataAccessException e) {
             return statisticsDao.saveStatistics(statisticsDto);

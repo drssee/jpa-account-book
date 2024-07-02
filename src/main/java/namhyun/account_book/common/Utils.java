@@ -1,4 +1,4 @@
-package namhyun.account_book;
+package namhyun.account_book.common;
 
 import namhyun.account_book.dto.MemberDto;
 import namhyun.account_book.dto.SearchCondition;

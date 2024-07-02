@@ -1,7 +1,7 @@
 package namhyun.account_book.dao;
 
 import namhyun.account_book.CommonInit;
-import namhyun.account_book.Utils;
+import namhyun.account_book.common.Utils;
 import namhyun.account_book.dto.MemberDto;
 import namhyun.account_book.dto.StatisticsDto;
 import org.assertj.core.api.Assertions;
@@ -69,9 +69,9 @@ public class StatisticsDaoTest {
         StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(
                 Utils.getSearchCondition(statisticsDto.getYear(), statisticsDto.getMonth(), statisticsDto.getMemberDto())
         );
-        findStatisticsDto.setNeedSum(true);
         int res = findStatisticsDto.getPayments() + 10000;
         findStatisticsDto.setPayments(10000);
+        findStatisticsDto.setNeedSum(true);
 
         Assertions.assertThat(findStatisticsDto.getId()).isNotNull();
 

@@ -62,6 +62,7 @@ public class CommonInit {
         accountBookDto.setMemberDto(initMemberDto());
         accountBookDto.setTitle("AccountBookDaoTest");
         accountBookDto.setPayPurpose(initPayPurposeDto());
+        accountBookDto.setNeedSum(true);
         return accountBookDto;
     }
 }

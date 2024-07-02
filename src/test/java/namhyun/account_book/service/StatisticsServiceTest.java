@@ -1,7 +1,7 @@
 package namhyun.account_book.service;
 
 import namhyun.account_book.CommonInit;
-import namhyun.account_book.Utils;
+import namhyun.account_book.common.Utils;
 import namhyun.account_book.dto.StatisticsDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -47,6 +47,7 @@ public class StatisticsServiceTest {
     void saveStatisticsWithUpdate() {
         int loop = 10;
         for (int i = 0; i < loop; i++) {
+            statisticsDto.setNeedSum(true);
             StatisticsDto savedStatisticsDto = statisticsService.saveStatistics(statisticsDto);
             System.out.println("i = " + i + ", sum = " + statisticsDto.getPayments() * (i + 1));
 

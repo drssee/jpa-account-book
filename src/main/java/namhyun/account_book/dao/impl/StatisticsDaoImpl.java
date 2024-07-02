@@ -3,7 +3,7 @@ package namhyun.account_book.dao.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
-import namhyun.account_book.Utils;
+import namhyun.account_book.common.Utils;
 import namhyun.account_book.dao.StatisticsDao;
 import namhyun.account_book.domain.Member;
 import namhyun.account_book.domain.Statistics;

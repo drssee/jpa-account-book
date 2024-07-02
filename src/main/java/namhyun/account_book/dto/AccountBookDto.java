@@ -16,4 +16,6 @@ public class AccountBookDto extends BaseDto {
     private MemberDto memberDto;
     private String title;
     private int price;
+
+    private boolean isNeedSum;
 }
