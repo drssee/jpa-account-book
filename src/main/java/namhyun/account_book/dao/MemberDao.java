@@ -9,6 +9,6 @@ public interface MemberDao {
 
     MemberDto saveMember(MemberDto memberDto);
     MemberDto updateMember(MemberDto memberDto);
-    MemberDto getMemberById(Long id);
+    MemberDto getMemberById(String memberId);
     List<MemberDto> getMembers(SearchCondition searchCondition);
 }

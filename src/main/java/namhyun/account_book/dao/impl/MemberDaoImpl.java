@@ -23,8 +23,8 @@ public class MemberDaoImpl implements MemberDao {
     private final ModelMapper modelMapper;
 
     @Override
-    public MemberDto getMemberById(Long id) {
-        return null;
+    public MemberDto getMemberById(String memberId) {
+        return modelMapper.map(em.find(Member.class, memberId), MemberDto.class);
     }
 
     @Override

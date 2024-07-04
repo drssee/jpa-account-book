@@ -1,14 +1,12 @@
 package namhyun.account_book.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class AccountBookDto extends BaseDto {
 
     private Long id;
@@ -18,4 +16,6 @@ public class AccountBookDto extends BaseDto {
     private int price;
 
     private boolean isNeedSum;
+    private String year;
+    private String month;
 }

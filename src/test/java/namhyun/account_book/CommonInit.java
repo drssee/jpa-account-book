@@ -1,10 +1,17 @@
 package namhyun.account_book;
 
+import jakarta.persistence.EntityManager;
+import namhyun.account_book.dao.ConfigDao;
+import namhyun.account_book.dao.MemberDao;
 import namhyun.account_book.dto.*;
 import namhyun.account_book.enums.SendType;
 import namhyun.account_book.enums.UserType;
+import namhyun.account_book.service.ConfigService;
+import namhyun.account_book.service.MemberService;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class CommonInit {
 
@@ -27,6 +34,8 @@ public class CommonInit {
     public PayPurposeDto initPayPurposeDto() {
         PayPurposeDto payPurposeDto = new PayPurposeDto();
         payPurposeDto.setName(DEFAULT_NAME);
+        payPurposeDto.setParent(null);
+        payPurposeDto.setChildren(new ArrayList<>());
         return payPurposeDto;
     }
 
@@ -44,6 +53,9 @@ public class CommonInit {
         configDto.setMemberDto(initMemberDto());
         configDto.setPayLimit(DEFAULT_PAY_LIMIT);
         configDto.setCanSendMessage(false);
+        configDto.setCustomMsg(null);
+        configDto.setCustomSendType(null);
+        configDto.setCustomSendTime(null);
         return configDto;
     }
 
@@ -62,7 +74,43 @@ public class CommonInit {
         accountBookDto.setMemberDto(initMemberDto());
         accountBookDto.setTitle("AccountBookDaoTest");
         accountBookDto.setPayPurpose(initPayPurposeDto());
+
         accountBookDto.setNeedSum(true);
+        accountBookDto.setYear(String.valueOf(LocalDateTime.now().getYear()));
+        accountBookDto.setMonth(String.valueOf(LocalDateTime.now().getMonthValue()));
         return accountBookDto;
+    }
+
+    public void saveMember(
+            MemberService memberService,
+            MemberDto memberDto
+    ) {
+        memberService.saveMember(memberDto);
+    }
+
+    public void saveConfig(
+            ConfigService configService,
+            ConfigDto configDto
+    ) {
+        configService.saveConfig(configDto);
+    }
+
+    public void saveMember(
+            MemberDao memberDao,
+            MemberDto memberDto
+    ) {
+        memberDao.saveMember(memberDto);
+    }
+
+    public void saveConfig(
+            ConfigDao configDao,
+            ConfigDto configDto
+    ) {
+        configDao.saveConfig(configDto);
+    }
+
+    public void flush(EntityManager em) {
+        em.flush();
+        em.clear();
     }
 }

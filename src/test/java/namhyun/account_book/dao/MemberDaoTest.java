@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.*;
+
 @SpringBootTest
 @Transactional
 public class MemberDaoTest {
@@ -30,9 +32,9 @@ public class MemberDaoTest {
     void saveMember() {
         MemberDto savedMember = memberDao.saveMember(memberDto);
 
-        Assertions.assertThat(savedMember).isNotNull();
-        Assertions.assertThat(savedMember.getId()).isNotNull();
-        Assertions.assertThat(savedMember.getCreatedBy()).isNotNull();
-        Assertions.assertThat(savedMember.getCreatedAt()).isNotNull();
+        assertThat(savedMember).isNotNull();
+        assertThat(savedMember.getId()).isNotNull();
+        assertThat(savedMember.getCreatedBy()).isNotNull();
+        assertThat(savedMember.getCreatedAt()).isNotNull();
     }
 }

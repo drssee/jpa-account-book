@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.*;
+
 @SpringBootTest
 @Transactional
 public class ConfigDaoTest {
@@ -39,11 +41,11 @@ public class ConfigDaoTest {
         // 설정저장
         ConfigDto savedConfig = configDao.saveConfig(configDto);
 
-        Assertions.assertThat(savedConfig).isNotNull();
-        Assertions.assertThat(savedConfig.getId()).isNotNull();
-        Assertions.assertThat(savedConfig.getCreatedAt()).isNotNull();
-        Assertions.assertThat(savedConfig.getCreatedBy()).isNotNull();
-        Assertions.assertThat(savedConfig.getMemberDto().getId()).isNotNull();
+        assertThat(savedConfig).isNotNull();
+        assertThat(savedConfig.getId()).isNotNull();
+        assertThat(savedConfig.getCreatedAt()).isNotNull();
+        assertThat(savedConfig.getCreatedBy()).isNotNull();
+        assertThat(savedConfig.getMemberDto().getId()).isNotNull();
     }
 
     @Test
@@ -56,8 +58,8 @@ public class ConfigDaoTest {
         // 조회테스트
         ConfigDto findConfig = configDao.getConfigByMemberId(savedMember.getId());
 
-        Assertions.assertThat(findConfig).isNotNull();
-        Assertions.assertThat(findConfig.getId()).isNotNull();
-        Assertions.assertThat(findConfig.getMemberDto().getId()).isEqualTo(savedMember.getId());
+        assertThat(findConfig).isNotNull();
+        assertThat(findConfig.getId()).isNotNull();
+        assertThat(findConfig.getMemberDto().getId()).isEqualTo(savedMember.getId());
     }
 }

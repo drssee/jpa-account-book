@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import namhyun.account_book.dao.AccountBookDao;
 import namhyun.account_book.domain.AccountBook;
+import namhyun.account_book.domain.Member;
 import namhyun.account_book.dto.AccountBookDto;
 import namhyun.account_book.dto.SearchCondition;
 import org.modelmapper.ModelMapper;
@@ -24,7 +25,11 @@ public class AccountBookDaoImpl implements AccountBookDao {
 
     @Override
     public AccountBookDto getAccountBookById(Long id) {
-        return null;
+        String query = "select b from AccountBook b where b.id = :id";
+        AccountBook result = em.createQuery(query, AccountBook.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        return modelMapper.map(result, AccountBookDto.class);
     }
 
     @Override
@@ -33,6 +38,7 @@ public class AccountBookDaoImpl implements AccountBookDao {
         accountBookDto.setCreatedBy(accountBookDto.getMemberDto().getId());
         AccountBook accountBook = modelMapper.map(accountBookDto, AccountBook.class);
         em.persist(accountBook);
+        em.persist(accountBook.getPayPurpose());
         return modelMapper.map(accountBook, AccountBookDto.class);
     }
 

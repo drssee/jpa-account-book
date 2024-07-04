@@ -35,7 +35,6 @@ public class StatisticsDaoImpl implements StatisticsDao {
         statisticsDto.setCreatedBy(statisticsDto.getMemberDto().getId());
         Statistics statistics = modelMapper.map(statisticsDto, Statistics.class);
         em.persist(statistics);
-        em.persist(statistics.getMember());
         return modelMapper.map(statistics, StatisticsDto.class);
     }
 
@@ -63,13 +62,13 @@ public class StatisticsDaoImpl implements StatisticsDao {
 
     @Override
     public StatisticsDto getStatisticsByDateAndMember(SearchCondition searchCondition) {
+        Member member = em.find(Member.class, searchCondition.getMemberDto().getId());
         String query = "select s from Statistics s where s.year = :year and s.month = :month and s.member = :member";
         Statistics result = em.createQuery(query, Statistics.class)
                 .setParameter("year", searchCondition.getYear())
                 .setParameter("month", searchCondition.getMonth())
-                .setParameter("member", modelMapper.map(searchCondition.getMemberDto(), Member.class))
+                .setParameter("member", member)
                 .getSingleResult();
-        em.persist(result);
         return modelMapper.map(result, StatisticsDto.class);
     }
 }

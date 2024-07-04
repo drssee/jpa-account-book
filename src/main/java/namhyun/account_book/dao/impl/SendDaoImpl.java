@@ -25,7 +25,11 @@ public class SendDaoImpl implements SendDao {
 
     @Override
     public SendDto getSendById(Long id) {
-        return null;
+        String query = "select s from Send s where s.id = :id";
+        Send result = em.createQuery(query, Send.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        return modelMapper.map(result, SendDto.class);
     }
 
     @Override

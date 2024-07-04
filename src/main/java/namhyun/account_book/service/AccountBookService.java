@@ -4,5 +4,6 @@ import namhyun.account_book.dto.AccountBookDto;
 
 public interface AccountBookService {
 
-    void pay(AccountBookDto accountBookDto);
+    AccountBookDto pay(AccountBookDto accountBookDto);
+    AccountBookDto getAccountBookById(Long id);
 }

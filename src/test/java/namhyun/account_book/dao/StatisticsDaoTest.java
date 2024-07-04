@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.*;
+
 @SpringBootTest
 @Transactional
 public class StatisticsDaoTest {
@@ -22,6 +24,9 @@ public class StatisticsDaoTest {
 
     @Autowired
     StatisticsDao statisticsDao;
+
+    @Autowired
+    MemberDao memberDao;
 
     @BeforeEach
     void init() {
@@ -34,11 +39,11 @@ public class StatisticsDaoTest {
     void saveStatistics() {
         StatisticsDto savedStatistics = statisticsDao.saveStatistics(statisticsDto);
 
-        Assertions.assertThat(savedStatistics).isNotNull();
-        Assertions.assertThat(savedStatistics.getId()).isNotNull();
-        Assertions.assertThat(savedStatistics.getId()).isNotEqualTo(0L);
-        Assertions.assertThat(savedStatistics.getCreatedAt()).isNotNull();
-        Assertions.assertThat(savedStatistics.getCreatedBy()).isEqualTo(statisticsDto.getMemberDto().getId());
+        assertThat(savedStatistics).isNotNull();
+        assertThat(savedStatistics.getId()).isNotNull();
+        assertThat(savedStatistics.getId()).isNotEqualTo(0L);
+        assertThat(savedStatistics.getCreatedAt()).isNotNull();
+        assertThat(savedStatistics.getCreatedBy()).isEqualTo(statisticsDto.getMemberDto().getId());
     }
 
     @Test
@@ -51,15 +56,15 @@ public class StatisticsDaoTest {
         int res = findStatisticsDto.getPayments() + 10000;
         findStatisticsDto.setPayments(res);
 
-        Assertions.assertThat(findStatisticsDto.getId()).isNotNull();
+        assertThat(findStatisticsDto.getId()).isNotNull();
 
         StatisticsDto updatedStatistics = statisticsDao.updateStatistics(findStatisticsDto);
-        Assertions.assertThat(updatedStatistics).isNotNull();
-        Assertions.assertThat(updatedStatistics.getId()).isNotNull();
-        Assertions.assertThat(updatedStatistics.getUpdatedAt()).isNotNull();
-        Assertions.assertThat(updatedStatistics.getUpdatedBy()).isNotNull();
-        Assertions.assertThat(updatedStatistics.getUpdatedBy()).isEqualTo(findStatisticsDto.getMemberDto().getId());
-        Assertions.assertThat(updatedStatistics.getPayments()).isEqualTo(res);
+        assertThat(updatedStatistics).isNotNull();
+        assertThat(updatedStatistics.getId()).isNotNull();
+        assertThat(updatedStatistics.getUpdatedAt()).isNotNull();
+        assertThat(updatedStatistics.getUpdatedBy()).isNotNull();
+        assertThat(updatedStatistics.getUpdatedBy()).isEqualTo(findStatisticsDto.getMemberDto().getId());
+        assertThat(updatedStatistics.getPayments()).isEqualTo(res);
     }
 
     @Test
@@ -73,29 +78,35 @@ public class StatisticsDaoTest {
         findStatisticsDto.setPayments(10000);
         findStatisticsDto.setNeedSum(true);
 
-        Assertions.assertThat(findStatisticsDto.getId()).isNotNull();
+        assertThat(findStatisticsDto.getId()).isNotNull();
 
 
         StatisticsDto updatedStatistics = statisticsDao.updateStatistics(findStatisticsDto);
-        Assertions.assertThat(updatedStatistics).isNotNull();
-        Assertions.assertThat(updatedStatistics.getId()).isNotNull();
-        Assertions.assertThat(updatedStatistics.getUpdatedAt()).isNotNull();
-        Assertions.assertThat(updatedStatistics.getUpdatedBy()).isNotNull();
-        Assertions.assertThat(updatedStatistics.getUpdatedBy()).isEqualTo(findStatisticsDto.getMemberDto().getId());
-        Assertions.assertThat(updatedStatistics.getPayments()).isEqualTo(res);
+        assertThat(updatedStatistics).isNotNull();
+        assertThat(updatedStatistics.getId()).isNotNull();
+        assertThat(updatedStatistics.getUpdatedAt()).isNotNull();
+        assertThat(updatedStatistics.getUpdatedBy()).isNotNull();
+        assertThat(updatedStatistics.getUpdatedBy()).isEqualTo(findStatisticsDto.getMemberDto().getId());
+        assertThat(updatedStatistics.getPayments()).isEqualTo(res);
     }
 
     @Test
     @DisplayName("StatisticsDao.getStatisticsByDateAndMember")
     void getStatisticsByDateAndMember() {
+        // 멤버o통계o -> duplicatekey
+        // 멤버o통계x -> no result 정상적
+        // 멤버x통계o -> 통계 저장시 멤버 영속화 해서 성공함
+        // 멤버x통계x -> no result 정상적
+//        MemberDto memberDto1 = memberDao.saveMember(memberDto);
+//        statisticsDto.setMemberDto(memberDto1);
         saveStatistics();
         StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(
                 Utils.getSearchCondition(statisticsDto.getYear(), statisticsDto.getMonth(), statisticsDto.getMemberDto())
         );
 
-        Assertions.assertThat(findStatisticsDto).isNotNull();
-        Assertions.assertThat(findStatisticsDto.getYear()).isEqualTo(statisticsDto.getYear());
-        Assertions.assertThat(findStatisticsDto.getMonth()).isEqualTo(statisticsDto.getMonth());
-        Assertions.assertThat(findStatisticsDto.getMemberDto().getId()).isEqualTo(statisticsDto.getMemberDto().getId());
+        assertThat(findStatisticsDto).isNotNull();
+        assertThat(findStatisticsDto.getYear()).isEqualTo(statisticsDto.getYear());
+        assertThat(findStatisticsDto.getMonth()).isEqualTo(statisticsDto.getMonth());
+        assertThat(findStatisticsDto.getMemberDto().getId()).isEqualTo(statisticsDto.getMemberDto().getId());
     }
 }

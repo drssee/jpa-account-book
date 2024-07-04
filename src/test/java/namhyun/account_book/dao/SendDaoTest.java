@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.*;
+
 @SpringBootTest
 @Transactional
 public class SendDaoTest {
@@ -37,9 +39,15 @@ public class SendDaoTest {
         memberDao.saveMember(memberDto);
         SendDto savedSend = sendDao.saveSend(sendDto);
 
-        Assertions.assertThat(savedSend).isNotNull();
-        Assertions.assertThat(savedSend.getId()).isNotNull();
-        Assertions.assertThat(savedSend.getCreatedAt()).isNotNull();
-        Assertions.assertThat(savedSend.getCreatedBy()).isEqualTo(savedSend.getMemberDto().getId());
+        assertThat(savedSend).isNotNull();
+        assertThat(savedSend.getId()).isNotNull();
+        assertThat(savedSend.getCreatedAt()).isNotNull();
+        assertThat(savedSend.getCreatedBy()).isEqualTo(savedSend.getMemberDto().getId());
+    }
+
+    @Test
+    @DisplayName("SendDao.getSendById()")
+    public void getSendById() {
+
     }
 }
