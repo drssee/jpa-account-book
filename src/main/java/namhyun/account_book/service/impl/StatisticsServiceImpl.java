@@ -7,7 +7,6 @@ import namhyun.account_book.dto.SearchCondition;
 import namhyun.account_book.dto.StatisticsDto;
 import namhyun.account_book.service.StatisticsService;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

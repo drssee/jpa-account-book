@@ -11,4 +11,5 @@ public interface SendDao {
     SendDto updateSend(SendDto sendDto);
     SendDto getSendById(Long id);
     List<SendDto> getSends(SearchCondition searchCondition);
+    List<SendDto> getSendListByMemberId(String memberId);
 }

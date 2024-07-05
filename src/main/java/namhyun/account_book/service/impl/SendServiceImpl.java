@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional
@@ -39,6 +40,8 @@ public class SendServiceImpl implements SendService {
             String customMsg,
             LocalDateTime sendTime,
             String memberId) {
+        if (memberId == null) throw new RuntimeException("createSend() - MemberId is null");
+
         SendDto sendDto = new SendDto();
 
         if (sendType == null) {
@@ -93,5 +96,10 @@ public class SendServiceImpl implements SendService {
                     " 지정하신 한도까지 " + (payLimit - totalPayments) + "원 남았습니다.";
         }
         return result;
+    }
+
+    @Override
+    public List<SendDto> getSendListByMemberId(String memberId) {
+        return sendDao.getSendListByMemberId(memberId);
     }
 }

@@ -5,7 +5,6 @@ import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import namhyun.account_book.dao.AccountBookDao;
 import namhyun.account_book.domain.AccountBook;
-import namhyun.account_book.domain.Member;
 import namhyun.account_book.dto.AccountBookDto;
 import namhyun.account_book.dto.SearchCondition;
 import org.modelmapper.ModelMapper;

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"id"})
 public class SendDto extends BaseDto {
 
     private Long id;

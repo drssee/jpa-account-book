@@ -9,9 +9,10 @@ import namhyun.account_book.enums.UserType;
 import namhyun.account_book.service.ConfigService;
 import namhyun.account_book.service.MemberService;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class CommonInit {
 
@@ -112,5 +113,14 @@ public class CommonInit {
     public void flush(EntityManager em) {
         em.flush();
         em.clear();
+    }
+
+    public void assertFindSendDto(SendDto findSenddto, SendDto sendDto) {
+        assertThat(findSenddto.getId()).isNotNull();
+        assertThat(findSenddto.getId()).isNotEqualTo(0L);
+        assertThat(findSenddto.getCreatedAt()).isNotNull();
+        assertThat(findSenddto.getCreatedBy()).isEqualTo(initMemberDto().getId());
+        assertThat(findSenddto.getMemberDto().getId()).isEqualTo(initMemberDto().getId());
+        assertThat(findSenddto.equals(sendDto)).isTrue();
     }
 }

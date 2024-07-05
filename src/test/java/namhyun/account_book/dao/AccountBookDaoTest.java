@@ -5,10 +5,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import namhyun.account_book.CommonInit;
 import namhyun.account_book.dto.AccountBookDto;
-import namhyun.account_book.dto.ConfigDto;
 import namhyun.account_book.dto.MemberDto;
-import namhyun.account_book.dto.PayPurposeDto;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional

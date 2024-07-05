@@ -1,7 +1,10 @@
 package namhyun.account_book.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import namhyun.account_book.CommonInit;
 import namhyun.account_book.dto.ConfigDto;
+import namhyun.account_book.dto.MemberDto;
 import namhyun.account_book.dto.SendDto;
 import namhyun.account_book.dto.StatisticsDto;
 import namhyun.account_book.enums.SendType;
@@ -12,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.assertj.core.api.Assertions.*;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 @Transactional
@@ -22,6 +27,7 @@ public class SendServiceTest {
     SendDto sendDto;
     StatisticsDto statisticsDto;
     ConfigDto configDto;
+    MemberDto memberDto;
 
     @Autowired
     SendService sendService;
@@ -35,11 +41,15 @@ public class SendServiceTest {
     @Autowired
     ConfigService configService;
 
+    @PersistenceContext
+    EntityManager em;
+
     @BeforeEach
     void init() {
         sendDto = commonInit.initSendDto();
         statisticsDto = commonInit.initStatisticsDto();
         configDto = commonInit.initConfigDto();
+        memberDto = commonInit.initMemberDto();
     }
 
     @Test
@@ -87,5 +97,28 @@ public class SendServiceTest {
         assertThat(savedSendDto.getMsg()).isEqualTo(sendDto.getMsg());
         assertThat(savedSendDto.getSendTime()).isNotNull();
         assertThat(savedSendDto.getSendTime()).isEqualTo(sendDto.getSendTime());
+    }
+
+    @Test
+    @DisplayName("SendService.getSendListByMemberId()")
+    public void getSendListByMemberId() {
+        // member, config, statistics 저장
+        MemberDto savedMember = memberService.saveMember(memberDto);
+        commonInit.flush(em);
+        ConfigDto savedConfig = configService.saveConfig(configDto);
+        statisticsService.saveStatistics(statisticsDto);
+
+        // send 저장
+        SendDto send = sendService.createSend(
+                savedConfig.getCustomSendType(),
+                savedConfig.getCustomMsg(),
+                savedConfig.getCustomSendTime(),
+                savedMember.getId()
+        );
+        SendDto savedSend = sendService.saveSend(send);
+
+        List<SendDto> result = sendService.getSendListByMemberId(savedMember.getId());
+        assertThat(result.size()).isEqualTo(1);
+        commonInit.assertFindSendDto(result.get(0), savedSend);
     }
 }

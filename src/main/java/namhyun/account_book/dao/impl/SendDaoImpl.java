@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -51,5 +52,19 @@ public class SendDaoImpl implements SendDao {
     @Override
     public List<SendDto> getSends(SearchCondition searchCondition) {
         return List.of();
+    }
+
+    @Override
+    public List<SendDto> getSendListByMemberId(String memberId) {
+        Member member = em.find(Member.class, memberId);
+        String query = "select s from Send s where s.member = :member";
+        List<Send> result = em.createQuery(query, Send.class)
+                .setParameter("member", member)
+                .getResultList();
+
+        return result
+                .stream()
+                .map((element) -> modelMapper.map(element, SendDto.class))
+                .collect(Collectors.toList());
     }
 }
