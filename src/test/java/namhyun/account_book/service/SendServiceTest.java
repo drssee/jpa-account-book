@@ -55,6 +55,8 @@ public class SendServiceTest {
     @Test
     @DisplayName("SendService.createSend()_Default")
     void createSendDefault() {
+        memberService.saveMember(memberDto);
+        commonInit.flush(em);
         statisticsService.saveStatistics(statisticsDto);
         configService.saveConfig(configDto);
         SendDto createdSendDto = sendService.createSend(
@@ -77,6 +79,8 @@ public class SendServiceTest {
     @Test
     @DisplayName("SendService.createSend()_Custom")
     void createSendCustom() {
+        memberService.saveMember(memberDto);
+        commonInit.flush(em);
         statisticsService.saveStatistics(statisticsDto);
         configService.saveConfig(configDto);
         SendDto createdSendDto = sendService.createSend(

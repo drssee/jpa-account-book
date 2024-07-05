@@ -1,7 +1,10 @@
 package namhyun.account_book.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import namhyun.account_book.CommonInit;
 import namhyun.account_book.common.Utils;
+import namhyun.account_book.dto.MemberDto;
 import namhyun.account_book.dto.StatisticsDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,13 +23,21 @@ public class StatisticsServiceTest {
 
     CommonInit commonInit = new CommonInit();
     StatisticsDto statisticsDto;
+    MemberDto memberDto;
 
     @Autowired
     StatisticsService statisticsService;
 
+    @Autowired
+    MemberService memberService;
+
+    @PersistenceContext
+    EntityManager em;
+
     @BeforeEach
     void init() {
         statisticsDto = commonInit.initStatisticsDto();
+        memberDto = commonInit.initMemberDto();
     }
 
     @Test
@@ -45,6 +56,8 @@ public class StatisticsServiceTest {
     @Test
     @DisplayName("StatisticsService.saveStatistics()_WithUpdate")
     void saveStatisticsWithUpdate() {
+        commonInit.saveMember(memberService, memberDto);
+        commonInit.flush(em);
         int loop = 10;
         for (int i = 0; i < loop; i++) {
             statisticsDto.setNeedSum(true);
@@ -63,6 +76,8 @@ public class StatisticsServiceTest {
     @Test
     @DisplayName("StatisticsService.getStatisticsByDateAndMember()")
     void getStatisticsByDateAndMember() {
+        commonInit.saveMember(memberService, memberDto);
+        commonInit.flush(em);
         saveStatistics();
         StatisticsDto findStatisticsDto = statisticsService.getStatisticsByDateAndMember(
                 Utils.getSearchCondition(statisticsDto.getYear(), statisticsDto.getMonth(), statisticsDto.getMemberDto())

@@ -1,5 +1,7 @@
 package namhyun.account_book.dao;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import namhyun.account_book.CommonInit;
 import namhyun.account_book.common.Utils;
 import namhyun.account_book.dto.MemberDto;
@@ -27,6 +29,9 @@ public class StatisticsDaoTest {
     @Autowired
     MemberDao memberDao;
 
+    @PersistenceContext
+    EntityManager em;
+
     @BeforeEach
     void init() {
         memberDto = commonInit.initMemberDto();
@@ -48,6 +53,8 @@ public class StatisticsDaoTest {
     @Test
     @DisplayName("StatisticsDao.updateStatistics")
     void updateStatistics() {
+        commonInit.saveMember(memberDao, memberDto);
+        commonInit.flush(em);
         saveStatistics();
         StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(
                 Utils.getSearchCondition(statisticsDto.getYear(), statisticsDto.getMonth(), statisticsDto.getMemberDto())
@@ -69,6 +76,8 @@ public class StatisticsDaoTest {
     @Test
     @DisplayName("StatisticsDao.updateStatistics(needSome)")
     void updateStatisticsWithNeedSum() {
+        commonInit.saveMember(memberDao, memberDto);
+        commonInit.flush(em);
         saveStatistics();
         StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(
                 Utils.getSearchCondition(statisticsDto.getYear(), statisticsDto.getMonth(), statisticsDto.getMemberDto())
@@ -96,8 +105,8 @@ public class StatisticsDaoTest {
         // 멤버o통계x -> no result 정상적
         // 멤버x통계o -> 통계 저장시 멤버 영속화 해서 성공함
         // 멤버x통계x -> no result 정상적
-//        MemberDto memberDto1 = memberDao.saveMember(memberDto);
-//        statisticsDto.setMemberDto(memberDto1);
+        commonInit.saveMember(memberDao, memberDto);
+        commonInit.flush(em);
         saveStatistics();
         StatisticsDto findStatisticsDto = statisticsDao.getStatisticsByDateAndMember(
                 Utils.getSearchCondition(statisticsDto.getYear(), statisticsDto.getMonth(), statisticsDto.getMemberDto())
