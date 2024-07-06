@@ -89,4 +89,15 @@ public class StatisticsServiceTest {
         assertThat(findStatisticsDto.getYear()).isEqualTo(String.valueOf(LocalDateTime.now().getYear()));
         assertThat(findStatisticsDto.getMonth()).isEqualTo(String.valueOf(LocalDateTime.now().getMonth().getValue()));
     }
+
+    @Test
+    @DisplayName("StatisticsService.getStatisticsById()")
+    void getStatisticsById() {
+        commonInit.saveMember(memberService, memberDto);
+        commonInit.flush(em);
+        StatisticsDto savedStatistics = statisticsService.saveStatistics(statisticsDto);
+        StatisticsDto findStatistics = statisticsService.getStatisticsById(savedStatistics.getId());
+        assertThat(findStatistics).isNotNull();
+        commonInit.assertFindStatisticsDto(findStatistics, savedStatistics);
+    }
 }

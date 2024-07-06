@@ -6,6 +6,7 @@ import jakarta.persistence.PersistenceContext;
 import namhyun.account_book.CommonInit;
 import namhyun.account_book.dto.AccountBookDto;
 import namhyun.account_book.dto.MemberDto;
+import namhyun.account_book.dto.PayPurposeDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,5 +64,32 @@ class AccountBookDaoTest {
         AccountBookDto findAccountBook = accountBookDao.getAccountBookById(savedAccountBook.getId());
         assertThat(findAccountBook).isNotNull();
         assertThat(findAccountBook).isEqualTo(savedAccountBook);
+    }
+
+    @Test
+    @DisplayName("AccountBookDao.updateAccountBook()")
+    void updateAccountBook() {
+        commonInit.saveMember(memberDao, memberDto);
+        commonInit.flush(em);
+        AccountBookDto savedAccountBook = accountBookDao.saveAccountBook(accountBookDto);
+        commonInit.flush(em);
+
+        String modifiedPayPurposeName = "MODIFIED_NAME";
+        String modifiedTitle = "MODIFIED_TITLE";
+        int modifiedPrice = 20000;
+        PayPurposeDto payPurposeDto = commonInit.initPayPurposeDto();
+        payPurposeDto.setName(modifiedPayPurposeName);
+        AccountBookDto updatedAccountBook = accountBookDao.updateAccountBook(
+                savedAccountBook.getId(),
+                payPurposeDto,
+                modifiedTitle,
+                modifiedPrice
+        );
+
+        assertThat(updatedAccountBook).isNotNull();
+        assertThat(updatedAccountBook.getId()).isEqualTo(savedAccountBook.getId());
+        assertThat(updatedAccountBook.getPayPurpose().getName()).isEqualTo(modifiedPayPurposeName);
+        assertThat(updatedAccountBook.getTitle()).isEqualTo(modifiedTitle);
+        assertThat(updatedAccountBook.getPrice()).isEqualTo(modifiedPrice);
     }
 }

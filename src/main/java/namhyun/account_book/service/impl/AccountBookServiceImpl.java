@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import namhyun.account_book.common.Utils;
 import namhyun.account_book.dao.AccountBookDao;
 import namhyun.account_book.dto.AccountBookDto;
 import namhyun.account_book.dto.ConfigDto;
@@ -67,5 +68,16 @@ public class AccountBookServiceImpl implements AccountBookService {
     @Override
     public AccountBookDto getAccountBookById(Long id) {
         return accountBookDao.getAccountBookById(id);
+    }
+
+    @Override
+    public AccountBookDto updateAccountBook(AccountBookDto accountBookDto) {
+        // accountBook.id로 기존 accountBook 조회
+        // year, month 비교
+        // 같을 경우 statistics 에 accountBook.price 차이만큼 수정
+        // 다를 경우 기존 accountBook.price 만큼 이전 year, month 통계에서 삭제 하고 새로운 year, month 에 save
+        // send 작성
+
+        return null;
     }
 }

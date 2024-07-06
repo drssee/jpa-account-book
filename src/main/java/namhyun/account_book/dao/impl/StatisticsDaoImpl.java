@@ -57,7 +57,8 @@ public class StatisticsDaoImpl implements StatisticsDao {
 
     @Override
     public StatisticsDto getStatisticsById(Long id) {
-        return null;
+        Statistics statistics = em.find(Statistics.class, id);
+        return modelMapper.map(statistics, StatisticsDto.class);
     }
 
     @Override

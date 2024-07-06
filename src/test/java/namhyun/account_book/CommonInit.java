@@ -115,12 +115,21 @@ public class CommonInit {
         em.clear();
     }
 
-    public void assertFindSendDto(SendDto findSenddto, SendDto sendDto) {
-        assertThat(findSenddto.getId()).isNotNull();
-        assertThat(findSenddto.getId()).isNotEqualTo(0L);
-        assertThat(findSenddto.getCreatedAt()).isNotNull();
-        assertThat(findSenddto.getCreatedBy()).isEqualTo(initMemberDto().getId());
-        assertThat(findSenddto.getMemberDto().getId()).isEqualTo(initMemberDto().getId());
-        assertThat(findSenddto.equals(sendDto)).isTrue();
+    public void assertFindSendDto(SendDto findSendDto, SendDto sendDto) {
+        assertThat(findSendDto.getId()).isNotNull();
+        assertThat(findSendDto.getId()).isNotEqualTo(0L);
+        assertThat(findSendDto.getCreatedAt()).isNotNull();
+        assertThat(findSendDto.getCreatedBy()).isEqualTo(initMemberDto().getId());
+        assertThat(findSendDto.getMemberDto().getId()).isEqualTo(initMemberDto().getId());
+        assertThat(findSendDto.equals(sendDto)).isTrue();
+    }
+
+    public void assertFindStatisticsDto(StatisticsDto findStatisticsDto, StatisticsDto statisticsDto) {
+        assertThat(findStatisticsDto.getId()).isNotNull();
+        assertThat(findStatisticsDto.getId()).isNotEqualTo(0L);
+        assertThat(findStatisticsDto.getCreatedAt()).isNotNull();
+        assertThat(findStatisticsDto.getCreatedBy()).isEqualTo(initMemberDto().getId());
+        assertThat(findStatisticsDto.getMemberDto().getId()).isEqualTo(initMemberDto().getId());
+        assertThat(findStatisticsDto.equals(statisticsDto)).isTrue();
     }
 }

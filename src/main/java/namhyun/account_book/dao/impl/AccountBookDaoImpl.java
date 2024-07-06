@@ -5,7 +5,9 @@ import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import namhyun.account_book.dao.AccountBookDao;
 import namhyun.account_book.domain.AccountBook;
+import namhyun.account_book.domain.PayPurpose;
 import namhyun.account_book.dto.AccountBookDto;
+import namhyun.account_book.dto.PayPurposeDto;
 import namhyun.account_book.dto.SearchCondition;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
@@ -42,8 +44,17 @@ public class AccountBookDaoImpl implements AccountBookDao {
     }
 
     @Override
-    public AccountBookDto updateAccountBook(AccountBookDto accountBookDto) {
-        return null;
+    public AccountBookDto updateAccountBook(
+            Long id,
+            PayPurposeDto payPurposeDto,
+            String title,
+            int price
+    ) {
+        AccountBook accountBook = em.find(AccountBook.class, id);
+        accountBook.setPayPurpose(modelMapper.map(payPurposeDto, PayPurpose.class));
+        accountBook.setTitle(title);
+        accountBook.setPrice(price);
+        return modelMapper.map(accountBook, AccountBookDto.class);
     }
 
     @Override

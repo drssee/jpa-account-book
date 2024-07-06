@@ -7,4 +7,5 @@ public interface StatisticsService {
 
     StatisticsDto saveStatistics(StatisticsDto statisticsDto);
     StatisticsDto getStatisticsByDateAndMember(SearchCondition searchCondition);
+    StatisticsDto getStatisticsById(Long id);
 }

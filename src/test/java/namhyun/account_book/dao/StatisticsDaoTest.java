@@ -117,4 +117,15 @@ public class StatisticsDaoTest {
         assertThat(findStatisticsDto.getMonth()).isEqualTo(statisticsDto.getMonth());
         assertThat(findStatisticsDto.getMemberDto().getId()).isEqualTo(statisticsDto.getMemberDto().getId());
     }
+
+    @Test
+    @DisplayName("StatisticsDao.getStatisticsById()")
+    void getStatisticsById() {
+        commonInit.saveMember(memberDao, memberDto);
+        commonInit.flush(em);
+        StatisticsDto savedStatistics = statisticsDao.saveStatistics(statisticsDto);
+        StatisticsDto findStatistics = statisticsDao.getStatisticsById(savedStatistics.getId());
+        assertThat(findStatistics).isNotNull();
+        commonInit.assertFindStatisticsDto(findStatistics, savedStatistics);
+    }
 }

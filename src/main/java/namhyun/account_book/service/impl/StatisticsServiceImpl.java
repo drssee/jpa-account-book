@@ -34,4 +34,9 @@ public class StatisticsServiceImpl implements StatisticsService {
     public StatisticsDto getStatisticsByDateAndMember(SearchCondition searchCondition) {
         return statisticsDao.getStatisticsByDateAndMember(searchCondition);
     }
+
+    @Override
+    public StatisticsDto getStatisticsById(Long id) {
+        return statisticsDao.getStatisticsById(id);
+    }
 }
