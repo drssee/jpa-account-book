@@ -189,4 +189,294 @@ public class AccountBookServiceTest {
         }
         return result;
     }
+
+    @Test
+    @DisplayName("AccountBookService.updateAccountBook()_same_years_months_gap_over_0")
+    void updateAccountBook_same_years_months_gap_over_0() {
+
+        // 멤버 저장
+        commonInit.saveMember(memberService, memberDto);
+        commonInit.flush(em);
+        // 설정 저장(null, on)
+        configDto.setCanSendMessage(true);
+        commonInit.saveConfig(configService, configDto);
+        commonInit.flush(em);
+
+        // pay 실행
+        AccountBookDto savedAccountBookDto = accountBookService.pay(accountBookDto);
+        commonInit.flush(em);
+
+        // 비교용 statistics 조회
+        StatisticsDto findStatisticsDto = statisticsService.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(savedAccountBookDto.getYears(), savedAccountBookDto.getMonths(), savedAccountBookDto.getMemberDto())
+        );
+
+        //* accountBook 업데이트
+        String modifiedPayPurpose = "MODIFIED_PAYPURPOSE";
+        savedAccountBookDto.getPayPurpose().setName(modifiedPayPurpose);
+        String modifiedTitle = "MODIFIED_TITLE";
+        savedAccountBookDto.setTitle(modifiedTitle);
+        int gap = 10000;
+        int modifiedPrice = accountBookDto.getPrice() + gap;
+        savedAccountBookDto.setPrice(modifiedPrice);
+        AccountBookDto updatedAccountBook = accountBookService.updateAccountBook(savedAccountBookDto);
+        commonInit.flush(em);
+
+        commonInit.assertFindAccountBookDto(updatedAccountBook, savedAccountBookDto);
+
+        //* statistics 업데이트 확인
+        int oldOne = findStatisticsDto.getPayments();
+        int newOne = statisticsService.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(updatedAccountBook.getYears(), updatedAccountBook.getMonths(), updatedAccountBook.getMemberDto())
+        ).getPayments();
+
+        assertThat(newOne - oldOne).isEqualTo(gap);
+
+        //* send 확인
+        List<SendDto> sendList = sendService.getSendListByMemberId(updatedAccountBook.getMemberDto().getId());
+        assertThat(sendList.size()).isNotEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("AccountBookService.updateAccountBook()_same_years_months_gap_under_0")
+    void updateAccountBook_same_years_months_gap_under_0() {
+
+        // 멤버 저장
+        commonInit.saveMember(memberService, memberDto);
+        commonInit.flush(em);
+        // 설정 저장(null, on)
+        configDto.setCanSendMessage(true);
+        commonInit.saveConfig(configService, configDto);
+        commonInit.flush(em);
+
+        // pay 실행
+        AccountBookDto savedAccountBookDto = accountBookService.pay(accountBookDto);
+        commonInit.flush(em);
+
+        // 비교용 statistics 조회
+        StatisticsDto findStatisticsDto = statisticsService.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(savedAccountBookDto.getYears(), savedAccountBookDto.getMonths(), savedAccountBookDto.getMemberDto())
+        );
+
+        //* accountBook 업데이트
+        String modifiedPayPurpose = "MODIFIED_PAYPURPOSE";
+        savedAccountBookDto.getPayPurpose().setName(modifiedPayPurpose);
+        String modifiedTitle = "MODIFIED_TITLE";
+        savedAccountBookDto.setTitle(modifiedTitle);
+        int gap = 5000;
+        int modifiedPrice = accountBookDto.getPrice() - gap;
+        savedAccountBookDto.setPrice(modifiedPrice);
+        AccountBookDto updatedAccountBook = accountBookService.updateAccountBook(savedAccountBookDto);
+        commonInit.flush(em);
+
+        commonInit.assertFindAccountBookDto(updatedAccountBook, savedAccountBookDto);
+
+        //* statistics 업데이트 확인
+        int oldOne = findStatisticsDto.getPayments();
+        int newOne = statisticsService.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(updatedAccountBook.getYears(), updatedAccountBook.getMonths(), updatedAccountBook.getMemberDto())
+        ).getPayments();
+
+        assertThat(newOne - oldOne).isEqualTo(gap);
+
+        //* send 확인
+        List<SendDto> sendList = sendService.getSendListByMemberId(updatedAccountBook.getMemberDto().getId());
+        assertThat(sendList.size()).isNotEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("AccountBookService.updateAccountBook()_same_years_months_gap_is_0")
+    void updateAccountBook_same_years_months_gap_is_0() {
+
+        // 멤버 저장
+        commonInit.saveMember(memberService, memberDto);
+        commonInit.flush(em);
+        // 설정 저장(null, on)
+        configDto.setCanSendMessage(true);
+        commonInit.saveConfig(configService, configDto);
+        commonInit.flush(em);
+
+        // pay 실행
+        AccountBookDto savedAccountBookDto = accountBookService.pay(accountBookDto);
+        commonInit.flush(em);
+
+        // 비교용 statistics 조회
+        StatisticsDto findStatisticsDto = statisticsService.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(savedAccountBookDto.getYears(), savedAccountBookDto.getMonths(), savedAccountBookDto.getMemberDto())
+        );
+
+        //* accountBook 업데이트
+        String modifiedPayPurpose = "MODIFIED_PAYPURPOSE";
+        savedAccountBookDto.getPayPurpose().setName(modifiedPayPurpose);
+        String modifiedTitle = "MODIFIED_TITLE";
+        savedAccountBookDto.setTitle(modifiedTitle);
+        AccountBookDto updatedAccountBook = accountBookService.updateAccountBook(savedAccountBookDto);
+        commonInit.flush(em);
+
+        commonInit.assertFindAccountBookDto(updatedAccountBook, savedAccountBookDto);
+
+        //* statistics 업데이트 확인
+        int oldOne = findStatisticsDto.getPayments();
+        int newOne = statisticsService.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(updatedAccountBook.getYears(), updatedAccountBook.getMonths(), updatedAccountBook.getMemberDto())
+        ).getPayments();
+        int gap = 0;
+
+        assertThat(newOne - oldOne).isEqualTo(gap);
+
+        //* send 확인
+        List<SendDto> sendList = sendService.getSendListByMemberId(updatedAccountBook.getMemberDto().getId());
+        assertThat(sendList.size()).isNotEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("AccountBookService.updateAccountBook()_differ_years_months_gap_over_0")
+    void updateAccountBook_differ_years_months_gap_over_0() {
+
+        // 멤버 저장
+        commonInit.saveMember(memberService, memberDto);
+        commonInit.flush(em);
+        // 설정 저장(null, on)
+        configDto.setCanSendMessage(true);
+        commonInit.saveConfig(configService, configDto);
+        commonInit.flush(em);
+
+        // pay 실행
+        AccountBookDto savedAccountBookDto = accountBookService.pay(accountBookDto);
+        commonInit.flush(em);
+
+        // 비교용 statistics 조회
+        StatisticsDto findStatisticsDto = statisticsService.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(savedAccountBookDto.getYears(), savedAccountBookDto.getMonths(), savedAccountBookDto.getMemberDto())
+        );
+
+        //* accountBook 업데이트
+        String modifiedPayPurpose = "MODIFIED_PAYPURPOSE";
+        savedAccountBookDto.getPayPurpose().setName(modifiedPayPurpose);
+        String modifiedTitle = "MODIFIED_TITLE";
+        savedAccountBookDto.setTitle(modifiedTitle);
+        String modifiedYear = "2023";
+        savedAccountBookDto.setYears(modifiedYear);
+        String modifiedMonth = "8";
+        savedAccountBookDto.setMonths(modifiedMonth);
+        int gap = 10000;
+        int modifiedPrice = accountBookDto.getPrice() + gap;
+        savedAccountBookDto.setPrice(modifiedPrice);
+        AccountBookDto updatedAccountBook = accountBookService.updateAccountBook(savedAccountBookDto);
+        commonInit.flush(em);
+
+        commonInit.assertFindAccountBookDto(updatedAccountBook, savedAccountBookDto);
+
+        //* statistics 업데이트 확인
+        int oldOne = findStatisticsDto.getPayments();
+        int newOne = statisticsService.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(updatedAccountBook.getYears(), updatedAccountBook.getMonths(), updatedAccountBook.getMemberDto())
+        ).getPayments();
+
+        assertThat(newOne - oldOne).isEqualTo(gap);
+
+        //* send 확인
+        List<SendDto> sendList = sendService.getSendListByMemberId(updatedAccountBook.getMemberDto().getId());
+        assertThat(sendList.size()).isNotEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("AccountBookService.updateAccountBook()_differ_years_months_gap_under_0")
+    void updateAccountBook_differ_years_months_gap_under_0() {
+
+        // 멤버 저장
+        commonInit.saveMember(memberService, memberDto);
+        commonInit.flush(em);
+        // 설정 저장(null, on)
+        configDto.setCanSendMessage(true);
+        commonInit.saveConfig(configService, configDto);
+        commonInit.flush(em);
+
+        // pay 실행
+        AccountBookDto savedAccountBookDto = accountBookService.pay(accountBookDto);
+        commonInit.flush(em);
+
+        // 비교용 statistics 조회
+        StatisticsDto findStatisticsDto = statisticsService.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(savedAccountBookDto.getYears(), savedAccountBookDto.getMonths(), savedAccountBookDto.getMemberDto())
+        );
+
+        //* accountBook 업데이트
+        String modifiedPayPurpose = "MODIFIED_PAYPURPOSE";
+        savedAccountBookDto.getPayPurpose().setName(modifiedPayPurpose);
+        String modifiedTitle = "MODIFIED_TITLE";
+        savedAccountBookDto.setTitle(modifiedTitle);
+        String modifiedYear = "2023";
+        savedAccountBookDto.setYears(modifiedYear);
+        String modifiedMonth = "8";
+        savedAccountBookDto.setMonths(modifiedMonth);
+        int gap = 5000;
+        int modifiedPrice = accountBookDto.getPrice() - gap;
+        savedAccountBookDto.setPrice(modifiedPrice);
+        AccountBookDto updatedAccountBook = accountBookService.updateAccountBook(savedAccountBookDto);
+        commonInit.flush(em);
+
+        commonInit.assertFindAccountBookDto(updatedAccountBook, savedAccountBookDto);
+
+        //* statistics 업데이트 확인
+        int oldOne = findStatisticsDto.getPayments();
+        int newOne = statisticsService.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(updatedAccountBook.getYears(), updatedAccountBook.getMonths(), updatedAccountBook.getMemberDto())
+        ).getPayments();
+
+        assertThat(newOne - oldOne).isEqualTo(gap);
+
+        //* send 확인
+        List<SendDto> sendList = sendService.getSendListByMemberId(updatedAccountBook.getMemberDto().getId());
+        assertThat(sendList.size()).isNotEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("AccountBookService.updateAccountBook()_differ_years_months_gap_is_0")
+    void updateAccountBook_differ_years_months_gap_is_0() {
+
+        // 멤버 저장
+        commonInit.saveMember(memberService, memberDto);
+        commonInit.flush(em);
+        // 설정 저장(null, on)
+        configDto.setCanSendMessage(true);
+        commonInit.saveConfig(configService, configDto);
+        commonInit.flush(em);
+
+        // pay 실행
+        AccountBookDto savedAccountBookDto = accountBookService.pay(accountBookDto);
+        commonInit.flush(em);
+
+        // 비교용 statistics 조회
+        StatisticsDto findStatisticsDto = statisticsService.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(savedAccountBookDto.getYears(), savedAccountBookDto.getMonths(), savedAccountBookDto.getMemberDto())
+        );
+
+        //* accountBook 업데이트
+        String modifiedPayPurpose = "MODIFIED_PAYPURPOSE";
+        savedAccountBookDto.getPayPurpose().setName(modifiedPayPurpose);
+        String modifiedTitle = "MODIFIED_TITLE";
+        savedAccountBookDto.setTitle(modifiedTitle);
+        String modifiedYear = "2023";
+        savedAccountBookDto.setYears(modifiedYear);
+        String modifiedMonth = "8";
+        savedAccountBookDto.setMonths(modifiedMonth);
+        AccountBookDto updatedAccountBook = accountBookService.updateAccountBook(savedAccountBookDto);
+        commonInit.flush(em);
+
+        commonInit.assertFindAccountBookDto(updatedAccountBook, savedAccountBookDto);
+
+        //* statistics 업데이트 확인
+        int oldOne = findStatisticsDto.getPayments();
+        int newOne = statisticsService.getStatisticsByDateAndMember(
+                Utils.getSearchCondition(updatedAccountBook.getYears(), updatedAccountBook.getMonths(), updatedAccountBook.getMemberDto())
+        ).getPayments();
+        int gap = 0;
+
+        assertThat(newOne - oldOne).isEqualTo(gap);
+
+        //* send 확인
+        List<SendDto> sendList = sendService.getSendListByMemberId(updatedAccountBook.getMemberDto().getId());
+        assertThat(sendList.size()).isNotEqualTo(0);
+    }
 }

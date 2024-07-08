@@ -77,8 +77,8 @@ public class CommonInit {
         accountBookDto.setPayPurpose(initPayPurposeDto());
 
         accountBookDto.setNeedSum(true);
-        accountBookDto.setYear(String.valueOf(LocalDateTime.now().getYear()));
-        accountBookDto.setMonth(String.valueOf(LocalDateTime.now().getMonthValue()));
+        accountBookDto.setYears(String.valueOf(LocalDateTime.now().getYear()));
+        accountBookDto.setMonths(String.valueOf(LocalDateTime.now().getMonthValue()));
         return accountBookDto;
     }
 
@@ -131,5 +131,14 @@ public class CommonInit {
         assertThat(findStatisticsDto.getCreatedBy()).isEqualTo(initMemberDto().getId());
         assertThat(findStatisticsDto.getMemberDto().getId()).isEqualTo(initMemberDto().getId());
         assertThat(findStatisticsDto.equals(statisticsDto)).isTrue();
+    }
+
+    public void assertFindAccountBookDto(AccountBookDto findAccountBookDto, AccountBookDto accountBookDto) {
+        assertThat(findAccountBookDto.getId()).isNotNull();
+        assertThat(findAccountBookDto.getId()).isNotEqualTo(0L);
+        assertThat(findAccountBookDto.getCreatedAt()).isNotNull();
+        assertThat(findAccountBookDto.getCreatedBy()).isEqualTo(initMemberDto().getId());
+        assertThat(findAccountBookDto.getMemberDto().getId()).isEqualTo(initMemberDto().getId());
+        assertThat(findAccountBookDto.equals(accountBookDto)).isTrue();
     }
 }

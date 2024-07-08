@@ -6,7 +6,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = false, exclude = {"id"})
 public class AccountBookDto extends BaseDto {
 
     private Long id;
@@ -16,6 +16,6 @@ public class AccountBookDto extends BaseDto {
     private int price;
 
     private boolean isNeedSum;
-    private String year;
-    private String month;
+    private String years;
+    private String months;
 }

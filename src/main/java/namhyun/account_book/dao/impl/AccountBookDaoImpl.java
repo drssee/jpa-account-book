@@ -48,12 +48,16 @@ public class AccountBookDaoImpl implements AccountBookDao {
             Long id,
             PayPurposeDto payPurposeDto,
             String title,
-            int price
+            int price,
+            String year,
+            String month
     ) {
         AccountBook accountBook = em.find(AccountBook.class, id);
         accountBook.setPayPurpose(modelMapper.map(payPurposeDto, PayPurpose.class));
         accountBook.setTitle(title);
         accountBook.setPrice(price);
+        accountBook.setYears(year);
+        accountBook.setMonths(month);
         return modelMapper.map(accountBook, AccountBookDto.class);
     }
 

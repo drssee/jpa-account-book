@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -79,11 +81,15 @@ class AccountBookDaoTest {
         int modifiedPrice = 20000;
         PayPurposeDto payPurposeDto = commonInit.initPayPurposeDto();
         payPurposeDto.setName(modifiedPayPurposeName);
+        String modifiedYear = String.valueOf(LocalDateTime.now().minusYears(1).getYear());
+        String modifiedMonth = String.valueOf(LocalDateTime.now().minusMinutes(1).getMonth());
         AccountBookDto updatedAccountBook = accountBookDao.updateAccountBook(
                 savedAccountBook.getId(),
                 payPurposeDto,
                 modifiedTitle,
-                modifiedPrice
+                modifiedPrice,
+                modifiedYear,
+                modifiedMonth
         );
 
         assertThat(updatedAccountBook).isNotNull();

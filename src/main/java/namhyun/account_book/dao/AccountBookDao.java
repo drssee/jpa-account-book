@@ -13,7 +13,9 @@ public interface AccountBookDao {
             Long id,
             PayPurposeDto payPurposeDto,
             String title,
-            int price
+            int price,
+            String year,
+            String month
     );
     AccountBookDto getAccountBookById(Long id);
     List<AccountBookDto> getAccountBooks(SearchCondition searchCondition);

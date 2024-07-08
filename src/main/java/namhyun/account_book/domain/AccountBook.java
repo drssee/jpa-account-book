@@ -22,4 +22,6 @@ public class AccountBook extends BaseEntity {
 
     private String title;
     private int price;
+    private String years;
+    private String months;
 }
