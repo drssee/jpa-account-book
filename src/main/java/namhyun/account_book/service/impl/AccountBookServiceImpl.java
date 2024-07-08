@@ -77,11 +77,11 @@ public class AccountBookServiceImpl implements AccountBookService {
                 if (gapAbs != 0) {
                     int priceGap = accountBookDto.getPrice() > findAccountBook.getPrice() ? gapAbs : gapAbs * -1;
                     findStatisticsDto.setPayments(priceGap);
+                    findStatisticsDto.setNeedSum(true);
+                    StatisticsDto savedStatistics = statisticsService.saveStatistics(findStatisticsDto);
+                    log.debug("savedStatistics: {}", savedStatistics.getId());
                 }
             }
-            findStatisticsDto.setNeedSum(true);
-            StatisticsDto savedStatistics = statisticsService.saveStatistics(findStatisticsDto);
-            log.debug("savedStatistics: {}", savedStatistics.getId());
         } catch (EmptyResultDataAccessException e) {
             log.debug("updateAccountBook - Years or Months changed -> save new statistics");
 

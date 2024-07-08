@@ -263,8 +263,8 @@ public class AccountBookServiceTest {
         savedAccountBookDto.getPayPurpose().setName(modifiedPayPurpose);
         String modifiedTitle = "MODIFIED_TITLE";
         savedAccountBookDto.setTitle(modifiedTitle);
-        int gap = 5000;
-        int modifiedPrice = accountBookDto.getPrice() - gap;
+        int gap = -5000;
+        int modifiedPrice = accountBookDto.getPrice() + gap;
         savedAccountBookDto.setPrice(modifiedPrice);
         AccountBookDto updatedAccountBook = accountBookService.updateAccountBook(savedAccountBookDto);
         commonInit.flush(em);
@@ -410,8 +410,8 @@ public class AccountBookServiceTest {
         savedAccountBookDto.setYears(modifiedYear);
         String modifiedMonth = "8";
         savedAccountBookDto.setMonths(modifiedMonth);
-        int gap = 5000;
-        int modifiedPrice = accountBookDto.getPrice() - gap;
+        int gap = -5000;
+        int modifiedPrice = accountBookDto.getPrice() + gap;
         savedAccountBookDto.setPrice(modifiedPrice);
         AccountBookDto updatedAccountBook = accountBookService.updateAccountBook(savedAccountBookDto);
         commonInit.flush(em);
