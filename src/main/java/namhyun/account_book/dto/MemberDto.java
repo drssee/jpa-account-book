@@ -14,4 +14,5 @@ public class MemberDto extends BaseDto {
     private String name;
     private int age;
     private UserType userType;
+    private String useYn;
 }

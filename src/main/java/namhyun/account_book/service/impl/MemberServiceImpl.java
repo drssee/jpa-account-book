@@ -23,4 +23,19 @@ public class MemberServiceImpl implements MemberService {
     public MemberDto getMemberById(String memberId) {
         return memberDao.getMemberById(memberId);
     }
+
+    @Override
+    public MemberDto updateMember(MemberDto memberDto) {
+        return memberDao.updateMember(memberDto);
+    }
+
+    @Override
+    public void deleteMember(String memberId) {
+        MemberDto findMember = memberDao.getMemberById(memberId);
+        if (findMember.getUseYn().equals("N")) throw new RuntimeException(
+                "deleteMember() - already deleted member"
+        );
+        findMember.setUseYn("N");
+        memberDao.updateMember(findMember);
+    }
 }

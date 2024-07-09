@@ -141,4 +141,11 @@ public class CommonInit {
         assertThat(findAccountBookDto.getMemberDto().getId()).isEqualTo(initMemberDto().getId());
         assertThat(findAccountBookDto.equals(accountBookDto)).isTrue();
     }
+
+    public void assertFindMemberDto(MemberDto findMemberDto, MemberDto memberDto) {
+        assertThat(findMemberDto.getId()).isNotNull();
+        assertThat(findMemberDto.getCreatedAt()).isNotNull();
+        assertThat(findMemberDto.getCreatedBy()).isEqualTo(initMemberDto().getId());
+        assertThat(findMemberDto.equals(memberDto)).isTrue();
+    }
 }

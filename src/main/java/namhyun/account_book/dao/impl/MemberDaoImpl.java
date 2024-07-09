@@ -38,7 +38,9 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public MemberDto updateMember(MemberDto memberDto) {
-        return null;
+        Member member = modelMapper.map(memberDto, Member.class);
+        Member updatedMember = em.merge(member);
+        return modelMapper.map(updatedMember, MemberDto.class);
     }
 
     @Override

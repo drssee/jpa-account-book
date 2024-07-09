@@ -6,4 +6,6 @@ public interface MemberService {
 
     MemberDto saveMember(MemberDto memberDto);
     MemberDto getMemberById(String memberId);
+    MemberDto updateMember(MemberDto memberDto);
+    void deleteMember(String memberId);
 }

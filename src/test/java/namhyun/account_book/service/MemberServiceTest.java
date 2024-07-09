@@ -1,4 +1,4 @@
-package namhyun.account_book.dao;
+package namhyun.account_book.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -13,16 +13,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
-public class MemberDaoTest {
+public class MemberServiceTest {
 
     MemberDto memberDto;
     CommonInit commonInit = new CommonInit();
 
     @Autowired
-    MemberDao memberDao;
+    MemberService memberService;
 
     @PersistenceContext
     EntityManager em;
@@ -33,9 +34,9 @@ public class MemberDaoTest {
     }
 
     @Test
-    @DisplayName("MemberDao.saveMember()")
+    @DisplayName("MemberService.saveMember()")
     void saveMember() {
-        MemberDto savedMember = memberDao.saveMember(memberDto);
+        MemberDto savedMember = memberService.saveMember(memberDto);
 
         assertThat(savedMember).isNotNull();
         assertThat(savedMember.getId()).isNotNull();
@@ -47,7 +48,7 @@ public class MemberDaoTest {
     @Test
     @DisplayName("MemberDao.updateMember()")
     void updateMember() {
-        MemberDto savedMember = memberDao.saveMember(memberDto);
+        MemberDto savedMember = memberService.saveMember(memberDto);
 
         String modifiedName = "MODIFIED_NAME";
         savedMember.setName(modifiedName);
@@ -58,12 +59,36 @@ public class MemberDaoTest {
         String modifiedUserYn = "N";
         savedMember.setUseYn(modifiedUserYn);
 
-        MemberDto updatedMember = memberDao.updateMember(savedMember);
+        MemberDto updatedMember = memberService.updateMember(savedMember);
         commonInit.flush(em);
 
-        MemberDto findMember = memberDao.getMemberById(updatedMember.getId());
+        MemberDto findMember = memberService.getMemberById(updatedMember.getId());
 
         assertThat(findMember).isNotNull();
         commonInit.assertFindMemberDto(findMember, updatedMember);
+    }
+
+    @Test
+    @DisplayName("MemberService.deleteMember()")
+    void deleteMember() {
+        MemberDto savedMember = memberService.saveMember(memberDto);
+        savedMember.setUseYn("Y");
+        MemberDto updatedMember = memberService.updateMember(savedMember);
+        memberService.deleteMember(savedMember.getId());
+        commonInit.flush(em);
+        MemberDto findMember = memberService.getMemberById(updatedMember.getId());
+        assertThat(findMember.getUseYn()).isEqualTo("N");
+    }
+
+    @Test
+    @DisplayName("MemberService.deleteMember()_already_deleted")
+    void deleteMember_already_deleted() {
+        MemberDto savedMember = memberService.saveMember(memberDto);
+        savedMember.setUseYn("N");
+        assertThatThrownBy(()->{
+            memberService.deleteMember(savedMember.getId());
+        })
+                .isInstanceOf(RuntimeException.class)
+                        .hasMessage("deleteMember() - already deleted member");
     }
 }
