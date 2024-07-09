@@ -5,9 +5,11 @@ import namhyun.account_book.common.Utils;
 import namhyun.account_book.dao.SendDao;
 import namhyun.account_book.dto.MemberDto;
 import namhyun.account_book.dto.SendDto;
+import namhyun.account_book.dto.SendResult;
 import namhyun.account_book.dto.StatisticsDto;
 import namhyun.account_book.enums.SendType;
 import namhyun.account_book.service.ConfigService;
+import namhyun.account_book.common.SendManager;
 import namhyun.account_book.service.SendService;
 import namhyun.account_book.service.StatisticsService;
 import org.modelmapper.ModelMapper;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,6 +31,7 @@ public class SendServiceImpl implements SendService {
     private final SendType DEFAULT_SEND_TYPE = SendType.MAIL;
     private final int DEFAULT_SEND_MINUTES = 5;
     private final ModelMapper modelMapper;
+    private final SendManager sendManager;
 
     @Override
     public SendDto saveSend(SendDto sendDto) {
@@ -101,5 +105,23 @@ public class SendServiceImpl implements SendService {
     @Override
     public List<SendDto> getSendListByMemberId(String memberId) {
         return sendDao.getSendListByMemberId(memberId);
+    }
+
+    @Override
+    public SendResult doSend() {
+        // 미발송목록 조회
+        List<SendDto> notYetSendList = sendDao.getNotYetSendList();
+        List<SendDto> needToSendList = new ArrayList<>();
+        notYetSendList.forEach(e -> {
+            LocalDateTime sendTime = e.getSendTime();
+            // 발송시간이 현재시간 ~ +5분 사이에 있는 목록 찾아서 발송
+            if (sendTime.isBefore(LocalDateTime.now().plusMinutes(DEFAULT_SEND_MINUTES))
+                    && sendTime.isAfter(LocalDateTime.now())) {
+
+                needToSendList.add(e);
+            }
+        });
+
+        return sendManager.doSend(needToSendList);
     }
 }

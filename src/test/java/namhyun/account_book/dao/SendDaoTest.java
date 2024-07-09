@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -72,8 +73,6 @@ public class SendDaoTest {
         commonInit.assertFindSendDto(result.get(0), sendDto);
     }
 
-
-
     @Test
     @DisplayName("SendDao.getSendListByMemberId()_xn")
     public void getSendListByMemberId_xn() {
@@ -87,5 +86,27 @@ public class SendDaoTest {
 
         assertThat(result.size()).isEqualTo(n);
         result.forEach(e -> commonInit.assertFindSendDto(e, sendDto));
+    }
+
+    @Test
+    @DisplayName("SendDao.getNotYetSendList()")
+    public void getNotYetSendList() {
+        memberDao.saveMember(memberDto);
+        int n = 3;
+        int sendCnt = 0;
+        int notYetCnt = 0;
+        for (int i = 0; i < n; i++) {
+            if (i % 2 == 0) {
+                sendDto.setSend(true);
+                sendCnt++;
+            } else {
+                sendDto.setSend(false);
+                notYetCnt++;
+            }
+            sendDao.saveSend(sendDto);
+        }
+
+        List<SendDto> notYetSendList = sendDao.getNotYetSendList();
+        assertThat(notYetSendList.size()).isEqualTo(notYetCnt);
     }
 }

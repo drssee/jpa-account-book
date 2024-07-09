@@ -125,4 +125,10 @@ public class SendServiceTest {
         assertThat(result.size()).isEqualTo(1);
         commonInit.assertFindSendDto(result.get(0), savedSend);
     }
+
+    @Test
+    @DisplayName("SendService.doSend()")
+    public void doSend() {
+
+    }
 }

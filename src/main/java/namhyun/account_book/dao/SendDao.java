@@ -12,4 +12,5 @@ public interface SendDao {
     SendDto getSendById(Long id);
     List<SendDto> getSends(SearchCondition searchCondition);
     List<SendDto> getSendListByMemberId(String memberId);
+    List<SendDto> getNotYetSendList();
 }

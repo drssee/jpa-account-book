@@ -62,6 +62,19 @@ public class SendDaoImpl implements SendDao {
                 .setParameter("member", member)
                 .getResultList();
 
+        return mapSendToSendDto(result);
+    }
+
+    @Override
+    public List<SendDto> getNotYetSendList() {
+        String query = "select s from Send s where s.isSend = :isSend";
+        List<Send> result = em.createQuery(query, Send.class)
+                .setParameter("isSend", false)
+                .getResultList();
+        return mapSendToSendDto(result);
+    }
+
+    private List<SendDto> mapSendToSendDto(List<Send> result) {
         return result
                 .stream()
                 .map((element) -> modelMapper.map(element, SendDto.class))
