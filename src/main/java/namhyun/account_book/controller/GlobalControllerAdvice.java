@@ -8,6 +8,7 @@ public class GlobalControllerAdvice {
 
     @ExceptionHandler(RuntimeException.class)
     public void handelRuntimeException(RuntimeException e) {
+        //TODO 예외처리 추가해야함
         e.printStackTrace();
     }
 }

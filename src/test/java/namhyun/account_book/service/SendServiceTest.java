@@ -3,23 +3,24 @@ package namhyun.account_book.service;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import namhyun.account_book.CommonInit;
-import namhyun.account_book.dto.ConfigDto;
-import namhyun.account_book.dto.MemberDto;
-import namhyun.account_book.dto.SendDto;
-import namhyun.account_book.dto.StatisticsDto;
+import namhyun.account_book.dao.SendDao;
+import namhyun.account_book.dto.*;
 import namhyun.account_book.enums.SendType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
+@ActiveProfiles("test")
 @Transactional
 public class SendServiceTest {
 
@@ -31,6 +32,9 @@ public class SendServiceTest {
 
     @Autowired
     SendService sendService;
+
+    @Autowired
+    SendDao sendDao;
 
     @Autowired
     MemberService memberService;
@@ -129,6 +133,31 @@ public class SendServiceTest {
     @Test
     @DisplayName("SendService.doSend()")
     public void doSend() {
+        memberService.saveMember(memberDto);
+        commonInit.flush(em);
+        statisticsService.saveStatistics(statisticsDto);
+        configService.saveConfig(configDto);
+        SendDto createdSendDto = sendService.createSend(
+                null,
+                null,
+                null,
+                sendDto.getMemberDto().getId()
+        );
+        SendDto savedSendDto = sendService.saveSend(createdSendDto);
+        // 미발송목록 조회
+        List<SendDto> notYetSendList = sendDao.getNotYetSendList();
+        // 발송
+        SendResult sendResult = sendService.doSend();
 
+        assertThat(notYetSendList.size()).isEqualTo(sendResult.getSize());
+        // 발송시간이 현재시간 ~ +5분 사이에 있는 목록 찾아서 발송했는지
+        sendResult.getSendTimes().forEach(e -> {
+            if (e.getSendTime().isAfter(LocalDateTime.now().plusMinutes(5))
+                    || e.getSendTime().isBefore(LocalDateTime.now())) {
+                throw new RuntimeException("발송시간 검증 실패");
+            }
+        });
+        // 성공했는지
+        assertThat(sendResult.getFail()).isEqualTo(0);
     }
 }

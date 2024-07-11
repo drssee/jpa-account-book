@@ -6,17 +6,20 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
 public class DummySendManager implements SendManager {
 
     @Override
     public SendResult doSend(List<SendDto> sendDtoList) {
         System.out.println("send start");
-        sendDtoList.forEach(System.out::println);
         SendResult sendResult = new SendResult();
-        sendResult.setSize(sendResult.getSize());
-        sendResult.setSuccess(sendResult.getSuccess());
+        sendResult.setSize(sendDtoList.size());
+        // 전부 성공한다고 가정
+        sendResult.setSuccess(sendDtoList.size());
         sendResult.setFail(0);
+        sendDtoList.forEach(e -> {
+            System.out.println(e.getSendTime());
+            sendResult.addSendTimes(e.getId(), e.getSendTime());
+        });
         System.out.println("send end");
 
         return sendResult;
