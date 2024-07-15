@@ -41,7 +41,7 @@ public class MemberDaoTest {
         assertThat(savedMember.getId()).isNotNull();
         assertThat(savedMember.getCreatedBy()).isNotNull();
         assertThat(savedMember.getCreatedAt()).isNotNull();
-        assertThat(savedMember.getUseYn()).isEqualTo("N");
+        assertThat(savedMember.getUseYn()).isEqualTo("Y");
     }
 
     @Test

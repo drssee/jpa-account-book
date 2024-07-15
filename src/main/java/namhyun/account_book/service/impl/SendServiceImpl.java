@@ -1,6 +1,7 @@
 package namhyun.account_book.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import namhyun.account_book.common.SendManager;
 import namhyun.account_book.common.Utils;
 import namhyun.account_book.dao.SendDao;
 import namhyun.account_book.dto.MemberDto;
@@ -9,7 +10,6 @@ import namhyun.account_book.dto.SendResult;
 import namhyun.account_book.dto.StatisticsDto;
 import namhyun.account_book.enums.SendType;
 import namhyun.account_book.service.ConfigService;
-import namhyun.account_book.common.SendManager;
 import namhyun.account_book.service.SendService;
 import namhyun.account_book.service.StatisticsService;
 import org.modelmapper.ModelMapper;

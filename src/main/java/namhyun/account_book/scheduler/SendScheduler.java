@@ -2,13 +2,10 @@ package namhyun.account_book.scheduler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import namhyun.account_book.dto.SendDto;
 import namhyun.account_book.dto.SendResult;
 import namhyun.account_book.service.SendService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor

@@ -8,6 +8,9 @@ spring:
     password:
   profiles:
     active: local
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect

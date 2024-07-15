@@ -42,7 +42,7 @@ public class MemberServiceTest {
         assertThat(savedMember.getId()).isNotNull();
         assertThat(savedMember.getCreatedBy()).isNotNull();
         assertThat(savedMember.getCreatedAt()).isNotNull();
-        assertThat(savedMember.getUseYn()).isEqualTo("N");
+        assertThat(savedMember.getUseYn()).isEqualTo("Y");
     }
 
     @Test
@@ -85,6 +85,8 @@ public class MemberServiceTest {
     void deleteMember_already_deleted() {
         MemberDto savedMember = memberService.saveMember(memberDto);
         savedMember.setUseYn("N");
+        memberService.updateMember(savedMember);
+        commonInit.flush(em);
         assertThatThrownBy(()->{
             memberService.deleteMember(savedMember.getId());
         })

@@ -1,7 +1,6 @@
 package namhyun.account_book.config;
 
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import namhyun.account_book.common.DummySendManager;
 import namhyun.account_book.common.SendManager;
 import org.springframework.context.annotation.Bean;

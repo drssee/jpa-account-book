@@ -38,6 +38,7 @@ public class MemberDaoImpl implements MemberDao {
 
     @Override
     public MemberDto updateMember(MemberDto memberDto) {
+        if (em.find(Member.class, memberDto.getId()) == null) throw new RuntimeException("존재하지 않는 사용자의 수정 요청");
         Member member = modelMapper.map(memberDto, Member.class);
         Member updatedMember = em.merge(member);
         return modelMapper.map(updatedMember, MemberDto.class);

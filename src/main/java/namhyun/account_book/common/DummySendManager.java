@@ -1,26 +1,28 @@
 package namhyun.account_book.common;
 
+import lombok.extern.log4j.Log4j2;
 import namhyun.account_book.dto.SendDto;
 import namhyun.account_book.dto.SendResult;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Log4j2
 public class DummySendManager implements SendManager {
 
     @Override
     public SendResult doSend(List<SendDto> sendDtoList) {
-        System.out.println("send start");
+        log.info("send start");
         SendResult sendResult = new SendResult();
         sendResult.setSize(sendDtoList.size());
         // 전부 성공한다고 가정
         sendResult.setSuccess(sendDtoList.size());
         sendResult.setFail(0);
         sendDtoList.forEach(e -> {
-            System.out.println(e.getSendTime());
+            log.info(e.getId());
+            log.info(e.getSendTime());
             sendResult.addSendTimes(e.getId(), e.getSendTime());
         });
-        System.out.println("send end");
+        log.info("send end");
 
         return sendResult;
     }

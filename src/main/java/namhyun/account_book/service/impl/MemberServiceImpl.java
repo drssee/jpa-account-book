@@ -32,9 +32,16 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void deleteMember(String memberId) {
         MemberDto findMember = memberDao.getMemberById(memberId);
-        if (findMember.getUseYn().equals("N")) throw new RuntimeException(
-                "deleteMember() - already deleted member"
-        );
+        if (findMember == null) {
+            throw new RuntimeException(
+                    "deleteMember() - already member not found"
+            );
+        }
+        if (findMember.getUseYn().equals("N")) {
+            throw new RuntimeException(
+                    "deleteMember() - already deleted member"
+            );
+        }
         findMember.setUseYn("N");
         memberDao.updateMember(findMember);
     }

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 @Profile("test")
 @Log4j2
-public class TestConfiguration {
+public class TestConfig {
 
     @Bean
     public SendManager sendManager() {

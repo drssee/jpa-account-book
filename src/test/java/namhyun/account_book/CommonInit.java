@@ -28,6 +28,7 @@ public class CommonInit {
         memberDto.setName(DEFAULT_NAME);
         memberDto.setAge(20);
         memberDto.setUserType(UserType.USER);
+        memberDto.setUseYn("Y");
 
         return memberDto;
     }
