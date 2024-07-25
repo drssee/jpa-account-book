@@ -177,4 +177,13 @@ public class MemberTest {
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @Test
+    @DisplayName("멤버 조회 성공")
+    @DirtiesContext
+    public void getMemberById_success() {
+        restTemplate.postForEntity(baseUrl + "/member", memberDto, String.class);
+        MemberDto result = restTemplate.getForObject(baseUrl + "/member/" + memberDto.getId(), MemberDto.class);
+        System.out.println("result.getId() = " + result.getId());
+    }
 }
